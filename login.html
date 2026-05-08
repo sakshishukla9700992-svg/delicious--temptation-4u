@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Sign Up - Delicious Temptations 4U</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-container {
+      display: flex;
+      max-width: 1000px;
+      margin: 60px auto;
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-hover);
+      min-height: 600px;
+    }
+
+    /* Left Side - Image */
+    .auth-image {
+      flex: 1;
+      background: linear-gradient(rgba(107, 66, 38, 0.4), rgba(107, 66, 38, 0.4)), url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80') center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: var(--white);
+      text-align: center;
+    }
+
+    .auth-quote {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      line-height: 1.3;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .auth-quote span {
+      color: var(--pink);
+    }
+
+    /* Right Side - Form */
+    .auth-form-wrapper {
+      flex: 1;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .auth-tab.active {
+      color: var(--pink-dark);
+    }
+
+    .auth-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--pink-dark);
+    }
+
+    .auth-form {
+      display: none;
+      animation: fadeIn 0.4s ease;
+      flex-grow: 1;
+    }
+
+    .auth-form.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--brown);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      font-family: var(--font-body);
+    }
+
+    .form-group input:focus {
+      border-color: var(--pink-dark);
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .form-row a {
+      color: var(--pink-dark);
+      font-weight: 500;
+    }
+
+    .form-row label {
+      margin: 0;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 400;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 30px 0;
+      position: relative;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #eee;
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    .social-login {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-btn {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .social-btn:hover {
+      background: #f9f9f9;
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        flex-direction: column;
+        margin: 20px;
+      }
+
+      .auth-image {
+        padding: 60px 20px;
+      }
+
+      .auth-form-wrapper {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="container text-center">
+      <a href="index.html" class="logo" style="justify-content: center;">
+        <img src="./image/logo_32-removebg-preview.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <span>Delicious Temptations 4U</span></a>
+    </div>
+  </nav>
+
+  <main style="padding-top: 80px;">
+    <div class="auth-container">
+
+      <div class="auth-image">
+        <div class="auth-quote">
+          "Life is short. <br><span>Eat dessert first.</span>"
+        </div>
+      </div>
+
+      <div class="auth-form-wrapper">
+        <div class="auth-tabs">
+          <div class="auth-tab active" onclick="switchAuthTab('login', this)">Login</div>
+          <div class="auth-tab" onclick="switchAuthTab('signup', this)">Sign Up</div>
+        </div>
+
+        <!-- Login Form -->
+        <form class="auth-form active" id="login-form" onsubmit="handleAuth(event, 'login')">
+          <div class="form-group">
+            <label>Email or Phone</label>
+            <input type="text" required placeholder="Enter your email or phone">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" required placeholder="Enter your password">
+          </div>
+
+          <div class="form-row">
+            <label><input type="checkbox"> Remember me</label>
+            <a href="#">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary"
+            style="width:100%; padding:15px; font-size:1.1rem;">Login</button>
+
+          <div class="divider">OR CONTINUE WITH</div>
+
+          <div class="social-login">
+            <button type="button" class="social-btn">
+              <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google"> Google
+            </button>
+            <button type="button" class="social-btn">
+              <img src="https://img.icons8.com/color/24/000000/facebook-new.png" alt="Facebook"> Facebook
+            </button>
+          </div>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form class="auth-form" id="signup-form" onsubmit="handleAuth(event, 'signup')">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" required placeholder="John Doe">
+          </div>
+          <div style="display:flex; gap:15px;">
+            <div class="form-group" style="flex:1;">
+              <label>Email</label>
+              <input type="email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Phone</label>
+              <input type="tel" required placeholder="+91 9876543210">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" required placeholder="Create a password">
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" required placeholder="Confirm your password">
+          </div>
+
+          <div class="form-row" style="margin-bottom:20px;">
+            <label><input type="checkbox" required> I agree to the <a href="#">Terms & Conditions</a></label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:15px; font-size:1.1rem;">Create
+            Account</button>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="productsData.js"></script>
+  <script src="app.js"></script>
+  <script>
+    function switchAuthTab(tab, el) {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+      document.getElementById(tab + '-form').classList.add('active');
+    }
+
+    function handleAuth(e, type) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Please wait... ⏳';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        // Mock success
+        showToast(type === 'login' ? 'Login successful! Redirecting...' : 'Account created! Redirecting...');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+      }, 1000);
+    }
+  </script>
+</body>
+
+</html>

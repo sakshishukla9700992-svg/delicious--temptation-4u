@@ -1,0 +1,1423 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Delicious Temptation 4U</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ABOUT PAGE LUXURY STYLING USING EXISTING BRAND COLORS */
+    .about-hero {
+      padding: 6rem 0 4rem;
+      background: radial-gradient(circle at top left, rgba(255, 192, 203, 0.18), rgba(255, 245, 225, 0.7));
+    }
+
+    .about-hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .badge-soft {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(233, 30, 140, 0.08);
+      border: 1px solid rgba(233, 30, 140, 0.35);
+      color: var(--pink-dark);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .badge-soft-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--gold);
+    }
+
+    .about-title {
+      font-size: clamp(2.4rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: var(--brown);
+    }
+
+    .about-title span {
+      color: var(--pink-dark);
+    }
+
+    .about-subtitle {
+      max-width: 520px;
+      font-size: 1rem;
+      color: rgba(44, 24, 16, 0.8);
+      margin-bottom: 1.8rem;
+    }
+
+    .about-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .metric-item h3 {
+      font-size: 1.4rem;
+      color: var(--pink-dark);
+      margin-bottom: 0.15rem;
+    }
+
+    .metric-item span {
+      display: block;
+      font-size: 0.9rem;
+      color: rgba(44, 24, 16, 0.8);
+    }
+
+    .about-hero-actions {
+      margin-top: 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .about-note {
+      font-size: 0.9rem;
+      color: rgba(44, 24, 16, 0.8);
+      max-width: 260px;
+    }
+
+    .about-hero-card {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: var(--shadow-hover);
+      padding: 1.6rem 1.6rem 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(212, 175, 55, 0.22), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(233, 30, 140, 0.18), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .about-hero-tag {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 245, 225, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      font-size: 0.8rem;
+      color: var(--brown);
+      margin-bottom: 1rem;
+    }
+
+    .about-hero-main {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 16px 40px rgba(107, 66, 38, 0.35);
+    }
+
+    .about-hero-main img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.02);
+      transition: transform 0.6s ease;
+    }
+
+    .about-hero-card:hover img {
+      transform: scale(1.06);
+    }
+
+    .about-hero-chip {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      background: rgba(107, 66, 38, 0.9);
+      color: var(--cream);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .about-hero-chip span {
+      font-weight: 500;
+    }
+
+    .about-hero-chip small {
+      font-size: 0.78rem;
+      opacity: 0.85;
+    }
+
+    /* STORY SECTION */
+    .about-section {
+      padding: 4rem 0;
+    }
+
+    .about-story-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 3rem;
+      align-items: flex-start;
+    }
+
+    .about-story-text p {
+      margin-bottom: 1rem;
+      color: rgba(44, 24, 16, 0.88);
+      font-size: 0.98rem;
+    }
+
+    .about-highlight-card {
+      margin-top: 1.5rem;
+      padding: 1.1rem 1.2rem;
+      border-radius: 18px;
+      background: rgba(255, 245, 225, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .about-highlight-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(233, 30, 140, 0.1);
+      color: var(--pink-dark);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .about-story-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: rgba(44, 24, 16, 0.85);
+    }
+
+    .about-story-meta strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--brown);
+    }
+
+    .about-story-gallery {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 1rem;
+    }
+
+    .about-story-photo {
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+    }
+
+    .about-story-photo img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .about-story-label {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--cream);
+      font-size: 0.78rem;
+    }
+
+    /* MISSION & VISION */
+    .mv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
+    .mv-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 1.6rem 1.4rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease,
+                  background 0.35s ease;
+    }
+
+    /* subtle animated glow when card comes into view (reuses .reveal.active) */
+    .mv-card.reveal.active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .mv-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 30px rgba(107, 66, 38, 0.25);
+      border-color: rgba(233, 30, 140, 0.4);
+      background: linear-gradient(135deg, rgba(255, 245, 225, 0.95), #ffffff);
+    }
+
+    .mv-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(233, 30, 140, 0.08);
+      color: var(--pink-dark);
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+    }
+
+    .mv-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(44, 24, 16, 0.6);
+      margin-bottom: 0.15rem;
+    }
+
+    .mv-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .mv-text {
+      font-size: 0.9rem;
+      color: rgba(44, 24, 16, 0.85);
+      line-height: 1.7;
+    }
+
+    .mv-footnote {
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: rgba(44, 24, 16, 0.65);
+    }
+
+    /* TEAM */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.6rem;
+    }
+
+    .team-card {
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .team-photo {
+      height: 400px;           /* adjusted image box size */
+      max-height: 360px;
+      overflow: hidden;
+    }
+
+    .team-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .team-card:hover .team-photo img {
+      transform: scale(1.05);
+    }
+
+    .team-body {
+      padding: 1.1rem 1.2rem 1.3rem;
+      font-size: 0.9rem;
+      color: rgba(44, 24, 16, 0.9);
+    }
+
+    .team-role {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--pink-dark);
+      margin-bottom: 0.15rem;
+    }
+
+    .team-name {
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+      color: var(--brown);
+    }
+
+    .team-tags {
+      margin-top: 0.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .team-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(233, 30, 140, 0.25);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(44, 24, 16, 0.8);
+      background: rgba(255, 192, 203, 0.08);
+    }
+
+    /* TESTIMONIALS */
+    .testimonial-wrapper {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: var(--shadow-hover);
+      padding: 1.8rem 1.6rem 2.2rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.28);
+    }
+
+    .testimonial-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.9rem;
+      color: rgba(44, 24, 16, 0.8);
+    }
+
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 1.1rem;
+      margin-right: 6px;
+    }
+
+    .testimonial-controls {
+      display: inline-flex;
+      gap: 0.4rem;
+    }
+
+    .testimonial-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(107, 66, 38, 0.2);
+      background: rgba(255, 245, 225, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--brown);
+      transition: var(--transition);
+    }
+
+    .testimonial-btn:hover {
+      background: var(--pink-dark);
+      color: var(--white);
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
+
+    .testimonial-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .testimonial {
+      min-width: 100%;
+      flex: 0 0 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 1.5rem;
+      font-size: 0.96rem;
+      color: rgba(44, 24, 16, 0.95);
+    }
+
+    .testimonial-quote {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .testimonial-quote::before {
+      content: "“";
+      position: absolute;
+      left: 0;
+      top: -10px;
+      font-size: 3rem;
+      color: rgba(233, 30, 140, 0.2);
+      font-family: var(--font-heading);
+    }
+
+    .testimonial-author {
+      margin-top: 0.9rem;
+      font-weight: 600;
+      color: var(--brown);
+      font-size: 0.92rem;
+    }
+
+    .testimonial-author span {
+      display: block;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: rgba(44, 24, 16, 0.7);
+      margin-top: 0.1rem;
+    }
+
+    .testimonial-meta {
+      font-size: 0.86rem;
+      color: rgba(44, 24, 16, 0.8);
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .testimonial-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(233, 30, 140, 0.08);
+      color: var(--pink-dark);
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .testimonial-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .testimonial-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(107, 66, 38, 0.2);
+      background: rgba(255, 245, 225, 0.8);
+      font-size: 0.8rem;
+    }
+
+    .testimonial-dots {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+
+    .testimonial-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(107, 66, 38, 0.26);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .testimonial-dot.active {
+      background: var(--pink-dark);
+      transform: scale(1.2);
+    }
+
+    /* VISIT / CTA */
+    .about-visit {
+      padding: 4rem 0 5rem;
+    }
+
+    .about-visit-card {
+      background: linear-gradient(135deg, var(--pink-dark), var(--gold));
+      border-radius: 24px;
+      padding: 2.2rem 2rem;
+      color: var(--cream);
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(0, 1.5fr);
+      gap: 2rem;
+      box-shadow: 0 12px 30px rgba(233, 30, 140, 0.45);
+    }
+
+    .about-visit h3 {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      color: var(--cream);
+    }
+
+    .about-visit p {
+      font-size: 0.96rem;
+      opacity: 0.95;
+    }
+
+    .about-visit-details {
+      font-size: 0.9rem;
+      opacity: 0.95;
+    }
+
+    .about-visit-details strong {
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .about-visit-details span {
+      display: block;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+      .about-hero-inner,
+      .about-story-grid,
+      .mv-grid,
+      .team-grid,
+      .testimonial,
+      .about-visit-card {
+        grid-template-columns: 1fr;
+      }
+
+      .about-hero {
+        padding-top: 5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .about-hero-inner {
+        gap: 2rem;
+      }
+
+      .about-section {
+        padding: 3rem 0;
+      }
+
+      .about-visit-card {
+        padding: 1.8rem 1.6rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .about-story-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .about-story-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #4A0E2F;
+      color: #FFF5E6;
+      padding: 70px 20px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* GRID */
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+
+    /* COLUMN */
+    .footer-col {
+      flex: 1;
+      min-width: 220px;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    /* LOGO */
+    .footer-logo {
+      height: 80px;
+      margin-bottom: 10px;
+    }
+
+    /* TEXT */
+    .footer-text {
+      font-size: 14px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    /* HEADINGS */
+    .footer-col h3 {
+      color: #D4AF37;
+      margin-bottom: 15px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* LINKS */
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #FFF5E6;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #D4AF37;
+      padding-left: 6px;
+    }
+
+    /* SOCIAL ICONS */
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icon {
+      width: 38px;
+      height: 38px;
+      background: #4A0E2F;
+      border: 1px solid #D4AF37;
+      color: #D4AF37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .social-icon:hover {
+      background: #D4AF37;
+      color: #4A0E2F;
+      transform: scale(1.1);
+    }
+
+    /* NEWSLETTER */
+    .newsletter-form {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .newsletter-form input {
+      padding: 10px;
+      border: none;
+      outline: none;
+      flex: 1;
+      border-radius: 20px 0 0 20px;
+    }
+
+    .newsletter-form button {
+      background: #D4AF37;
+      color: #4A0E2F;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 0 20px 20px 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .newsletter-form button:hover {
+      background: #c19b2e;
+    }
+
+    /* BUTTON */
+    .btn-gold {
+      display: inline-block;
+      margin-top: 15px;
+      background: #D4AF37;
+      color: #4A0E2F;
+      padding: 10px 18px;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+
+    /* FOOTER BOTTOM */
+    .footer-bottom {
+      text-align: center;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 15px;
+      font-size: 14px;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #D4AF37;
+      color: #4A0E2F;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.4s;
+      z-index: 999;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* WHATSAPP FLOAT */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #25D366;
+      color: #fff;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      background: #1ebe5d;
+    }
+
+    /* ANIMATION */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .footer-grid {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .newsletter-form input,
+      .newsletter-form button {
+        border-radius: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar (matches site style) -->
+   <!-- Navbar -->
+   <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="./image/logo_32-removebg-preview.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <span>Delicious Temptations 4U</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="offers.html">Offers</a></li>
+        <li><a href="tracking.html">Track Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-icons">
+        <div class="nav-icon" onclick="window.location.href='menu.html'"><span title="Search">🔍</span></div>
+        <!-- ❤️ Wishlist — links to wishlist.html -->
+        <div class="nav-icon" onclick="window.location.href='wishlist.html'" title="My Wishlist">
+          <i class="fas fa-heart"></i>
+          <div class="badge" id="wishlist-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='cart.html'">
+          <span title="Cart">🛒</span>
+          <div class="badge" id="cart-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='login.html'"><span title="Login">👤</span></div>
+        <div class="hamburger" id="hamburger-btn">☰</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile drawer (used by existing JS) -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-close" id="drawer-close">&times;</div>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="wishlist.html">Wishlist</a></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="about-hero">
+      <div class="container">
+        <div class="about-hero-inner reveal">
+          <div>
+            <div class="badge-soft">
+              <span class="badge-soft-dot"></span>
+              ABOUT OUR ATELIER
+            </div>
+            <h1 class="about-title">
+              Luxury desserts, <span>crafted</span> to tempt every sense.
+            </h1>
+            <p class="about-subtitle">
+              At Delicious Temptation 4U, we blend classic pâtisserie techniques with heartfelt storytelling,
+              creating cakes and desserts that feel as personal as the moments you’re celebrating.
+            </p>
+
+            <div class="about-metrics">
+              <div class="metric-item">
+                <h3>10+</h3>
+                <span>Years of slow-crafted indulgence</span>
+              </div>
+              <div class="metric-item">
+                <h3>1,200+</h3>
+                <span>Signature creations plated every month</span>
+              </div>
+              <div class="metric-item">
+                <h3>4.9★</h3>
+                <span>Average rating from our sweetest guests</span>
+              </div>
+            </div>
+
+            <div class="about-hero-actions">
+              <button class="btn btn-gold" onclick="location.href='#visit'">
+                Book a tasting experience
+              </button>
+              <p class="about-note">
+                Limited curated slots each week so every celebration receives the attention it deserves.
+              </p>
+            </div>
+          </div>
+
+          <div class="about-hero-card">
+            <div class="about-hero-tag">
+              Hand-layered, slow-whipped, finished by torchlight.
+            </div>
+            <div class="about-hero-main">
+              <img src="image/Hand-layered.png" alt="Luxury cake from Delicious Temptation 4U">
+              <div class="about-hero-chip">
+                <div>
+                  <span>Signature chocolate truffle gateau</span>
+                  <small>Single-origin cacao · Tahitian vanilla cloud · 72-hour flavor development</small>
+                </div>
+                <small>Chef’s pick ✧</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRAND STORY -->
+    <section class="about-section" id="story">
+      <div class="container">
+        <div class="section-heading reveal">
+          <h2>Our story</h2>
+          <p>
+            From a tiny home oven to a full-fledged dessert atelier, Delicious Temptation 4U was born from
+            a simple promise: every bite should taste like a memory worth keeping.
+          </p>
+        </div>
+
+        <div class="about-story-grid reveal">
+          <div class="about-story-text">
+            <p>
+              Our journey began in a warm home kitchen, where <strong>Chef Riya</strong> baked late into the night
+              for family and friends. Word travelled quickly, and soon our cakes were appearing at intimate
+              weddings, milestone birthdays, and late-night celebrations across the city.
+            </p>
+            <p>
+              What started as a passion project has grown into a boutique bakery that treats every order like a
+              custom commission. We still whisk by hand, taste every ganache, and carefully balance flavors, so
+              every slice looks stunning and tastes even better.
+            </p>
+            <p>
+              Today, Delicious Temptation 4U is known for its clean, modern aesthetics, indulgent textures, and
+              warm service. We create desserts that feel luxurious, but never distant – designed for real people,
+              real stories, and real celebrations.
+            </p>
+
+            <div class="about-highlight-card">
+              <div class="about-highlight-icon">★</div>
+              <div>
+                <strong>Zero compromise on quality.</strong><br>
+                We work in small, focused batches, using premium ingredients like Belgian chocolate,
+                pure dairy cream, and seasonal fruits to ensure every dessert is worthy of the moment it celebrates.
+              </div>
+            </div>
+
+            <div class="about-story-meta">
+              <div>
+                <strong>100%</strong>
+                Real cream, butter &amp; chocolate – never premixes.
+              </div>
+              <div>
+                <strong>3</strong>
+                Cities served through our curated delivery partners.
+              </div>
+              <div>
+                <strong>500+</strong>
+                Weddings &amp; events sweetened and counting.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="about-story-gallery">
+              <div class="about-story-photo">
+                <img src="image/Midnight.png" alt="Cake decoration at Delicious Temptation 4U">
+                <span class="about-story-label">Midnight finishing touches at the studio</span>
+              </div>
+              <div class="about-story-photo">
+                <img src="image/Pastry.png" alt="Pastry preparation at the bakery">
+                <span class="about-story-label">Hand-piped details on petit fours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION & VISION -->
+    <section class="about-section" id="mission">
+      <div class="container">
+        <div class="section-heading reveal">
+          <h2>Mission &amp; vision</h2>
+          <p>
+            Every dessert we create should feel thoughtful, beautiful, and effortlessly indulgent –
+            never rushed, never ordinary.
+          </p>
+        </div>
+
+        <div class="mv-grid">
+          <article class="mv-card reveal">
+            <div class="mv-icon">♡</div>
+            <div class="mv-label">Our mission</div>
+            <h3 class="mv-title">To tell your story in layers</h3>
+            <p class="mv-text">
+              We exist to transform your occasions into edible stories. From flavour pairings to visual
+              styling, every element is designed around your taste, mood, and memories.
+            </p>
+            <p class="mv-footnote">
+              Consultations, tasting boxes, and mood boards are all part of the creative dessert process.
+            </p>
+          </article>
+
+          <article class="mv-card reveal">
+            <div class="mv-icon">∞</div>
+            <div class="mv-label">Our vision</div>
+            <h3 class="mv-title">Luxury that feels warm</h3>
+            <p class="mv-text">
+              We imagine a world where premium desserts feel inviting, not intimidating – where every
+              guest, regardless of age or preference, feels welcome at the dessert table.
+            </p>
+            <p class="mv-footnote">
+              From kids’ parties to black-tie receptions, we design for real people, not just photographs.
+            </p>
+          </article>
+
+          <article class="mv-card reveal">
+            <div class="mv-icon">✧</div>
+            <div class="mv-label">Our promise</div>
+            <h3 class="mv-title">Craft, consistency &amp; care</h3>
+            <p class="mv-text">
+              We obsess over the details – baking temperatures, resting times, travel-safe packaging,
+              and on-site setups – so your dessert arrives as perfect as it left our kitchen.
+            </p>
+            <p class="mv-footnote">
+              No shortcuts, no last-minute improvisations. Just reliable, delicious artistry every time.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="about-section" id="team">
+      <div class="container">
+        <div class="section-heading reveal">
+          <h2>Meet our pastry family</h2>
+          <p>
+            Behind every swirl of ganache and sugar flower is a small, passionate team that treats
+            your celebration like their own.
+          </p>
+        </div>
+
+        <div class="team-grid">
+          <article class="team-card reveal">
+            <div class="team-photo">
+              <img src="image/riya.png" alt="Executive pastry chef">
+            </div>
+            <div class="team-body">
+              <div class="team-role">Founder · Executive Pastry Chef</div>
+              <div class="team-name">Chef Riya Arora</div>
+              <p>
+                The creative heart of Delicious Temptation 4U, Riya blends classic French methods with
+                nostalgic flavours from across India to design desserts that feel both comforting and couture.
+              </p>
+              <div class="team-tags">
+                <span class="team-tag">Bespoke wedding cakes</span>
+                <span class="team-tag">Flavour architecture</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-photo">
+              <img src="image/Chef Marco Silva.png" alt="Chocolate and sugar artist">
+            </div>
+            <div class="team-body">
+              <div class="team-role">Chocolate &amp; Texture Specialist</div>
+              <div class="team-name">Chef Marco Silva</div>
+              <p>
+                From mirror glazes to delicate chocolate shards, Marco is our master of texture –
+                ensuring every bite offers contrast, crunch, and silky smoothness.
+              </p>
+              <div class="team-tags">
+                <span class="team-tag">Single-origin cacao</span>
+                <span class="team-tag">Sugar artistry</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-photo">
+              <img src="image/Ananya Mehra.png" alt="Guest experience lead">
+            </div>
+            <div class="team-body">
+              <div class="team-role">Guest Experience Curator</div>
+              <div class="team-name">Ananya Mehra</div>
+              <p>
+                Ananya ensures your journey with us feels seamless – from first enquiry to final
+                plated slice – coordinating logistics, tastings, and on-site setups with a calm smile.
+              </p>
+              <div class="team-tags">
+                <span class="team-tag">Tasting journeys</span>
+                <span class="team-tag">Event coordination</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="about-section" id="testimonials">
+      <div class="container">
+        <div class="section-heading reveal">
+          <h2>What our guests say</h2>
+          <p>
+            Real words from couples, families and hosts who invited us into their sweetest moments.
+          </p>
+        </div>
+
+        <div class="testimonial-wrapper reveal">
+          <div class="testimonial-header">
+            <div>
+              <span class="testimonial-stars">★★★★★</span>
+              Loved by dessert lovers across the city
+            </div>
+            <div class="testimonial-controls">
+              <button class="testimonial-btn" id="test-prev" aria-label="Previous testimonial">‹</button>
+              <button class="testimonial-btn" id="test-next" aria-label="Next testimonial">›</button>
+            </div>
+          </div>
+
+          <div class="testimonial-track" id="testimonial-track">
+            <article class="testimonial">
+              <div class="testimonial-quote">
+                “Our wedding cake looked like a piece of art and tasted even better. Guests were
+                going back for second and third slices! Delicious Temptation 4U understood exactly
+                what we wanted and delivered beyond our imagination.”
+                <div class="testimonial-author">
+                  Aisha &amp; Kabir
+                  <span>Intimate sunset wedding · 120 guests</span>
+                </div>
+              </div>
+              <div class="testimonial-meta">
+                <div class="testimonial-pill">Custom 4-tier pistachio &amp; rose cake</div>
+                <div class="testimonial-tags">
+                  <span class="testimonial-tag">Hand-painted details</span>
+                  <span class="testimonial-tag">Coordinated with decor</span>
+                  <span class="testimonial-tag">Zero leftovers</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="testimonial">
+              <div class="testimonial-quote">
+                “I requested a cake with multiple dietary preferences and zero compromise on taste.
+                The team listened carefully, suggested flavours, and created a dessert everyone could
+                enjoy together. Seeing every plate wiped clean was the best feeling.”
+                <div class="testimonial-author">
+                  Meera Shah
+                  <span>Family birthday · 18 guests</span>
+                </div>
+              </div>
+              <div class="testimonial-meta">
+                <div class="testimonial-pill">Inclusive, allergy-conscious celebration cake</div>
+                <div class="testimonial-tags">
+                  <span class="testimonial-tag">Eggless option</span>
+                  <span class="testimonial-tag">Nut-aware kitchen</span>
+                  <span class="testimonial-tag">Refined sugar conscious</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="testimonial">
+              <div class="testimonial-quote">
+                “As an event planner, I look for partners who are reliable, creative, and calm under
+                pressure. DT4U ticks every box. Their desserts photograph beautifully and arrive
+                perfectly packed, every single time.”
+                <div class="testimonial-author">
+                  Rahul Verma
+                  <span>Luxury event planner</span>
+                </div>
+              </div>
+              <div class="testimonial-meta">
+                <div class="testimonial-pill">Preferred dessert partner for premium events</div>
+                <div class="testimonial-tags">
+                  <span class="testimonial-tag">Timely delivery</span>
+                  <span class="testimonial-tag">On-site styling</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="testimonial-dots">
+            <span class="testimonial-dot active" data-index="0"></span>
+            <span class="testimonial-dot" data-index="1"></span>
+            <span class="testimonial-dot" data-index="2"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISIT / CTA -->
+    <section class="about-visit" id="visit">
+      <div class="container">
+        <div class="about-visit-card reveal">
+          <div>
+            <h3>Reserve a private tasting at Delicious Temptation 4U</h3>
+            <p>
+              Share your date, guest count, and celebration style, and we’ll curate a tasting
+              menu featuring our most-loved signatures and a few surprises just for you.
+            </p>
+          </div>
+          <div class="about-visit-details">
+            <strong>By appointment only</strong>
+            <span>📍 Studio: Central city location (shared upon confirmation)</span>
+            <span>🕒 Slots: Limited weekend &amp; weekday evenings</span>
+            <br>
+            <button class="btn btn-primary" onclick="location.href='mailto:hello@delicioustemptation4u.com?subject=Tasting%20Request'">
+              Email us your celebration details
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+
+  <footer class="footer">
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <!-- LOGO + ABOUT -->
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="./image/logo_32-removebg-preview.png" alt="Logo" class="footer-logo">
+          </a>
+
+          <p class="footer-text">
+            Handcrafted with love, baked fresh daily in Ludhiana.
+          </p>
+
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Menu</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Track Order</a></li>
+          </ul>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="footer-col">
+          <h3>Categories</h3>
+          <ul class="footer-links">
+            <li><a href="#">Cakes</a></li>
+            <li><a href="#">Cupcakes</a></li>
+            <li><a href="#">Cookies</a></li>
+            <li><a href="#">Gift Hampers</a></li>
+          </ul>
+        </div>
+
+        <!-- NEWSLETTER -->
+        <div class="footer-col">
+          <h3>Stay Updated</h3>
+          <p>Get exclusive offers & sweet updates 💌</p>
+
+          <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="footer-col">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> Ludhiana, Punjab</p>
+          <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+          <p><i class="fas fa-envelope"></i> info@delicioustemptations4u.com</p>
+
+          <a href="https://wa.me/919876543210" class="btn-gold">
+            <i class="fab fa-whatsapp"></i> Order on WhatsApp
+          </a>
+        </div>
+
+      </div>
+
+      <!-- FOOTER BOTTOM -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 Delicious Temptations 4U. All rights reserved.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- POPUP -->
+  <div id="popup" class="popup"></div>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script src="app.js"></script>
+  <script>
+    // Set current year in footer (only if the element exists)
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Simple testimonial slider using brand styling
+    (function () {
+      const track = document.getElementById('testimonial-track');
+      const wrapper = document.querySelector('.testimonial-wrapper');
+      const dots = Array.from(document.querySelectorAll('.testimonial-dot'));
+      const nextBtn = document.getElementById('test-next');
+      const prevBtn = document.getElementById('test-prev');
+      let index = 0;
+
+      function goTo(i) {
+        const total = dots.length;
+        index = (i + total) % total;
+        // Move exactly by one visible card width (not % of track width).
+        const slideWidth = wrapper ? wrapper.clientWidth : 0;
+        track.style.transform = 'translateX(' + (index * -slideWidth) + 'px)';
+        dots.forEach((d, idx) => d.classList.toggle('active', idx === index));
+      }
+
+      if (nextBtn && prevBtn) {
+        nextBtn.addEventListener('click', () => goTo(index + 1));
+        prevBtn.addEventListener('click', () => goTo(index - 1));
+      }
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const i = parseInt(dot.getAttribute('data-index'), 10);
+          goTo(i);
+        });
+      });
+
+      // Keep slider aligned on resize
+      window.addEventListener('resize', () => goTo(index));
+
+      setInterval(() => goTo(index + 1), 9000);
+    })();
+  </script>
+</body>
+</html>
+

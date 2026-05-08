@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Menu - Delicious Temptations 4U</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Menu Page Layout */
+    .menu-layout {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: var(--white);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: var(--shadow-soft);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-group {
+      margin-bottom: 25px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
+    }
+
+    .filter-group:last-child {
+      border-bottom: none;
+    }
+
+    .filter-title {
+      font-size: 1.1rem;
+      color: var(--brown);
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .checkbox-item input {
+      accent-color: var(--pink-dark);
+      width: 16px;
+      height: 16px;
+    }
+
+    .price-range-inputs {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .price-range-inputs input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: var(--font-body);
+    }
+
+    .sidebar-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .sidebar-actions button {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    /* Product Area */
+    .menu-main {
+      flex-grow: 1;
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--white);
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .load-more-container {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .skeleton {
+      background: #f0f0f0;
+      animation: shimmer 1.5s infinite linear;
+      background: linear-gradient(to right, #f6f7f8 4%, #edeef1 25%, #f6f7f8 36%);
+      background-size: 1000px 100%;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    .skel-card {
+      height: 350px;
+      border-radius: 16px;
+    }
+
+    /* Quick View Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border-radius: 20px;
+      width: 90%;
+      max-width: 800px;
+      position: relative;
+      padding: 30px;
+      display: flex;
+      gap: 30px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--brown);
+    }
+
+    .modal-img {
+      width: 40%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .modal-info {
+      width: 60%;
+    }
+
+    .modal-info h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-price {
+      font-size: 1.5rem;
+      color: var(--pink-dark);
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 1024px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: static;
+      }
+
+      .modal-content {
+        flex-direction: column;
+      }
+
+      .modal-img,
+      .modal-info {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #4A0E2F;
+      color: #FFF5E6;
+      padding: 70px 20px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* GRID */
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+
+    /* COLUMN */
+    .footer-col {
+      flex: 1;
+      min-width: 220px;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    /* LOGO */
+    .footer-logo {
+      height: 80px;
+      margin-bottom: 10px;
+    }
+
+    /* TEXT */
+    .footer-text {
+      font-size: 14px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    /* HEADINGS */
+    .footer-col h3 {
+      color: #D4AF37;
+      margin-bottom: 15px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* LINKS */
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #FFF5E6;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #D4AF37;
+      padding-left: 6px;
+    }
+
+    /* SOCIAL ICONS */
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icon {
+      width: 38px;
+      height: 38px;
+      background: #4A0E2F;
+      border: 1px solid #D4AF37;
+      color: #D4AF37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .social-icon:hover {
+      background: #D4AF37;
+      color: #4A0E2F;
+      transform: scale(1.1);
+    }
+
+    /* NEWSLETTER */
+    .newsletter-form {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .newsletter-form input {
+      padding: 10px;
+      border: none;
+      outline: none;
+      flex: 1;
+      border-radius: 20px 0 0 20px;
+    }
+
+    .newsletter-form button {
+      background: #D4AF37;
+      color: #4A0E2F;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 0 20px 20px 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .newsletter-form button:hover {
+      background: #c19b2e;
+    }
+
+    /* BUTTON */
+    .btn-gold {
+      display: inline-block;
+      margin-top: 15px;
+      background: #D4AF37;
+      color: #4A0E2F;
+      padding: 10px 18px;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+
+    /* FOOTER BOTTOM */
+    .footer-bottom {
+      text-align: center;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 15px;
+      font-size: 14px;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #D4AF37;
+      color: #4A0E2F;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.4s;
+      z-index: 999;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* WHATSAPP FLOAT */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #25D366;
+      color: #fff;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      background: #1ebe5d;
+    }
+
+    /* ANIMATION */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .footer-grid {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .newsletter-form input,
+      .newsletter-form button {
+        border-radius: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="./image/logo_32-removebg-preview.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <span>Delicious Temptations 4U</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html" class="active">Menu</a></li>
+        <li><a href="offers.html">Offers</a></li>
+        <li><a href="tracking.html">Track Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-icons">
+        <!-- Search -->
+        <div class="nav-icon" onclick="window.location.href='menu.html'">
+          <span title="Search">🔍</span>
+        </div>
+        <!-- ❤️ Wishlist — links to wishlist.html -->
+        <div class="nav-icon" onclick="window.location.href='wishlist.html'" title="My Wishlist">
+          <i class="fas fa-heart"></i>
+          <div class="badge" id="wishlist-badge" style="display:none;">0</div>
+        </div>
+        <!-- Cart -->
+        <div class="nav-icon" onclick="window.location.href='cart.html'">
+          <span title="Cart">🛒</span>
+          <div class="badge" id="cart-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='login.html'">
+          <span title="Login">👤</span>
+        </div>
+        <div class="hamburger" id="hamburger-btn">☰</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-close" id="drawer-close">&times;</div>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="offers.html">Offers</a></li>
+      <li><a href="tracking.html">Track Order</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="login.html">Login / Sign Up</a></li>
+    </ul>
+  </div>
+
+  <main class="container">
+    <div class="section-heading mt-4">
+      <h2>Our Menu</h2>
+    </div>
+
+    <div class="menu-layout">
+      <!-- Sidebar Filters -->
+      <aside class="sidebar">
+        <div class="filter-group">
+          <div class="filter-title">Categories</div>
+          <label class="checkbox-item"><input type="checkbox" value="All" class="cat-filter" checked> All</label>
+          <label class="checkbox-item"><input type="checkbox" value="Cakes" class="cat-filter"> Cakes</label>
+          <label class="checkbox-item"><input type="checkbox" value="Cupcakes" class="cat-filter"> Cupcakes</label>
+          <label class="checkbox-item"><input type="checkbox" value="Cookies" class="cat-filter"> Cookies</label>
+          <label class="checkbox-item"><input type="checkbox" value="Donuts" class="cat-filter"> Donuts</label>
+          <label class="checkbox-item"><input type="checkbox" value="Gift Hampers" class="cat-filter"> Gift
+            Hampers</label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title">Price Range (₹)</div>
+          <div class="price-range-inputs">
+            <input type="number" id="min-price" placeholder="Min" value="0">
+            <span>-</span>
+            <input type="number" id="max-price" placeholder="Max" value="3000">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title">Rating</div>
+          <select id="rating-filter" style="width:100%; padding: 8px; border-radius:5px;">
+            <option value="0">All Ratings</option>
+            <option value="4">4 Stars & Above</option>
+            <option value="4.5">4.5 Stars & Above</option>
+          </select>
+        </div>
+
+        <div class="sidebar-actions">
+          <button class="btn btn-primary" onclick="applyFilters()">Apply</button>
+          <button class="btn btn-outline" onclick="clearFilters()">Clear</button>
+        </div>
+      </aside>
+
+      <!-- Main Product Area -->
+      <div class="menu-main">
+        <div class="menu-header">
+          <span id="result-count">Showing 0 results</span>
+          <select id="sort-select" onchange="applyFilters()" style="padding: 8px; border-radius:5px;">
+            <option value="default">Default Sorting</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+          </select>
+        </div>
+
+        <div class="menu-grid" id="menu-grid">
+          <!-- Skeletons shown initially -->
+          <div class="skeleton skel-card"></div>
+          <div class="skeleton skel-card"></div>
+          <div class="skeleton skel-card"></div>
+          <div class="skeleton skel-card"></div>
+          <div class="skeleton skel-card"></div>
+          <div class="skeleton skel-card"></div>
+        </div>
+
+        <div class="load-more-container">
+          <button class="btn btn-primary" id="load-more-btn" onclick="loadMore()">Load More</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Quick View Modal -->
+  <div class="modal-overlay" id="quick-view-modal">
+    <div class="modal-content">
+      <div class="modal-close" onclick="closeModal()">×</div>
+      <img src="" alt="" class="modal-img" id="qv-img">
+      <div class="modal-info">
+        <h2 id="qv-title">Product Name</h2>
+        <div class="product-rating" id="qv-rating">★★★★★ <span>(0)</span></div>
+        <div class="modal-price" id="qv-price">₹0.00</div>
+        <p style="margin-bottom: 20px; color: #666;">Freshly baked and handcrafted with premium ingredients for the
+          ultimate taste experience.</p>
+        <div class="flex gap-4">
+          <button class="btn btn-primary" id="qv-add-btn">Add to Cart</button>
+          <!-- ❤️ Wishlist button in Quick View Modal -->
+          <button class="action-btn wishlist-btn" id="qv-wishlist-btn"
+                  onclick="toggleWishlist(currentQVProductId, this)"
+                  title="Add to Wishlist">
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+        <a id="qv-link" href="#"
+          style="display:block; margin-top:20px; color:var(--pink-dark); text-decoration:underline;">View Full
+          Details</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+
+  <footer class="footer">
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <!-- LOGO + ABOUT -->
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="./image/logo_32-removebg-preview.png" alt="Logo" class="footer-logo">
+          </a>
+
+          <p class="footer-text">
+            Handcrafted with love, baked fresh daily in Ludhiana.
+          </p>
+
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Menu</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Track Order</a></li>
+          </ul>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="footer-col">
+          <h3>Categories</h3>
+          <ul class="footer-links">
+            <li><a href="#">Cakes</a></li>
+            <li><a href="#">Cupcakes</a></li>
+            <li><a href="#">Cookies</a></li>
+            <li><a href="#">Gift Hampers</a></li>
+          </ul>
+        </div>
+
+        <!-- NEWSLETTER -->
+        <div class="footer-col">
+          <h3>Stay Updated</h3>
+          <p>Get exclusive offers & sweet updates 💌</p>
+
+          <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="footer-col">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> Ludhiana, Punjab</p>
+          <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+          <p><i class="fas fa-envelope"></i> info@delicioustemptations4u.com</p>
+
+          <a href="https://wa.me/919876543210" class="btn-gold">
+            <i class="fab fa-whatsapp"></i> Order on WhatsApp
+          </a>
+        </div>
+
+      </div>
+
+      <!-- FOOTER BOTTOM -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 Delicious Temptations 4U. All rights reserved.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- POPUP -->
+  <div id="popup" class="popup"></div>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+
+  <script src="productsData.js"></script>
+  <script src="app.js"></script>
+  <!-- Wishlist engine — must come after app.js -->
+  <script src="wishlist.js"></script>
+  <script>
+    let filteredProducts = [];
+    let displayedCount = 0;
+    const ITEMS_PER_PAGE = 12;
+    const fallbackMenuImg = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80';
+
+    async function initMenuPage() {
+      // Check query params for initial filter
+      const categoryParam = getQueryParam('category');
+      if (categoryParam) {
+        document.querySelectorAll('.cat-filter').forEach(cb => {
+          cb.checked = (cb.value === categoryParam);
+        });
+      }
+
+      // Small delay to show skeleton loaders
+      setTimeout(() => {
+        applyFilters();
+      }, 500);
+
+      // Setup Checkbox logic (if 'All' is checked, uncheck others. If others checked, uncheck 'All')
+      const catCheckboxes = document.querySelectorAll('.cat-filter');
+      catCheckboxes.forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          if (e.target.value === 'All' && e.target.checked) {
+            catCheckboxes.forEach(c => { if (c.value !== 'All') c.checked = false; });
+          } else if (e.target.value !== 'All' && e.target.checked) {
+            const allCb = document.querySelector('.cat-filter[value="All"]');
+            if (allCb) allCb.checked = false;
+          }
+          // If none checked, check 'All'
+          const anyChecked = Array.from(catCheckboxes).some(c => c.checked);
+          if (!anyChecked) {
+            document.querySelector('.cat-filter[value="All"]').checked = true;
+          }
+          applyFilters();
+        });
+      });
+    }
+
+    function applyFilters() {
+      if (!products.length) return;
+
+      // 1. Category
+      const checkedCats = Array.from(document.querySelectorAll('.cat-filter:checked')).map(cb => cb.value);
+
+      // 2. Price
+      const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+      const maxPrice = parseFloat(document.getElementById('max-price').value) || 99999;
+
+      // 3. Rating
+      const minRating = parseFloat(document.getElementById('rating-filter').value);
+
+      // Filtering logic
+      filteredProducts = products.filter(p => {
+        const catMatch = checkedCats.includes('All') || checkedCats.includes(p.category);
+        const priceMatch = p.price >= minPrice && p.price <= maxPrice;
+        const ratingMatch = p.rating >= minRating;
+        return catMatch && priceMatch && ratingMatch;
+      });
+
+      // Sorting logic
+      const sortBy = document.getElementById('sort-select').value;
+      if (sortBy === 'price-low') filteredProducts.sort((a, b) => a.price - b.price);
+      if (sortBy === 'price-high') filteredProducts.sort((a, b) => b.price - a.price);
+      if (sortBy === 'rating') filteredProducts.sort((a, b) => b.rating - a.rating);
+
+      // Reset displayed
+      displayedCount = 0;
+      document.getElementById('menu-grid').innerHTML = '';
+
+      loadMore();
+    }
+
+    function loadMore() {
+      const grid = document.getElementById('menu-grid');
+      const nextBatch = filteredProducts.slice(displayedCount, displayedCount + ITEMS_PER_PAGE);
+
+      if (displayedCount === 0 && nextBatch.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; font-size: 1.2rem;">No products found matching your criteria.</p>';
+        document.getElementById('result-count').textContent = `Showing 0 results`;
+        document.getElementById('load-more-btn').style.display = 'none';
+        return;
+      }
+
+      const html = nextBatch.map(product => `
+        <div class="product-card reveal">
+          <div class="product-img-wrap" onclick="window.location.href='product.html?id=${product.id}'">
+            <img src="${product.image || fallbackMenuImg}"
+                 alt="${product.name}"
+                 class="product-img"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='${fallbackMenuImg}'">
+            ${product.isBestseller ? '<div class="product-badge">Bestseller</div>' : ''}
+            <div class="product-actions-overlay" onclick="event.stopPropagation()">
+              <!-- Cart button -->
+              <button class="action-btn" onclick="addToCart(${product.id})" title="Add to Cart">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
+              <!-- Quick View -->
+              <button class="action-btn" onclick="openQuickView(${product.id})" title="Quick View">
+                <i class="fas fa-eye"></i>
+              </button>
+              <!-- ❤️ Wishlist toggle -->
+              ${getWishlistButtonHTML(product.id)}
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">${product.name}</div>
+            <div class="product-rating">
+              ${'★'.repeat(Math.round(product.rating))}${'☆'.repeat(5 - Math.round(product.rating))}
+              <span>(${product.reviews})</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price">${formatCurrency(product.price)}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      grid.innerHTML += html;
+      displayedCount += nextBatch.length;
+
+      document.getElementById('result-count').textContent = `Showing ${displayedCount} of ${filteredProducts.length} results`;
+
+      const loadMoreBtn = document.getElementById('load-more-btn');
+      if (displayedCount >= filteredProducts.length) {
+        loadMoreBtn.style.display = 'none';
+      } else {
+        loadMoreBtn.style.display = 'inline-block';
+      }
+
+      // Re-trigger reveal animation for new items
+      setupScrollReveal();
+    }
+
+    function clearFilters() {
+      document.querySelectorAll('.cat-filter').forEach(cb => cb.checked = false);
+      document.querySelector('.cat-filter[value="All"]').checked = true;
+      document.getElementById('min-price').value = '0';
+      document.getElementById('max-price').value = '3000';
+      document.getElementById('rating-filter').value = '0';
+      document.getElementById('sort-select').value = 'default';
+      applyFilters();
+    }
+
+    // ── Track which product is in Quick View ──
+    let currentQVProductId = null;
+
+    // Quick View Modal Logic
+    function openQuickView(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+
+      currentQVProductId = id; // store for wishlist btn
+
+      const qvImg = document.getElementById('qv-img');
+      qvImg.src = product.image || fallbackMenuImg;
+      qvImg.onerror = function () {
+        this.onerror = null;
+        this.src = fallbackMenuImg;
+      };
+      document.getElementById('qv-title').textContent = product.name;
+      document.getElementById('qv-price').textContent = formatCurrency(product.price);
+      document.getElementById('qv-rating').innerHTML =
+        `${'★'.repeat(Math.round(product.rating))}${'☆'.repeat(5 - Math.round(product.rating))}
+         <span>(${product.reviews})</span>`;
+
+      // Wire up Add to Cart
+      const addBtn = document.getElementById('qv-add-btn');
+      addBtn.onclick = () => { addToCart(product.id); closeModal(); };
+
+      // Sync ❤️ wishlist button state
+      const wBtn = document.getElementById('qv-wishlist-btn');
+      if (wBtn) {
+        const inList = isInWishlist(id);
+        wBtn.classList.toggle('wishlisted', inList);
+        wBtn.innerHTML = `<i class="${inList ? 'fas' : 'far'} fa-heart"></i>`;
+        wBtn.title = inList ? 'Remove from Wishlist' : 'Add to Wishlist';
+      }
+
+      document.getElementById('qv-link').href = `product.html?id=${product.id}`;
+      document.getElementById('quick-view-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('quick-view-modal').classList.remove('active');
+    }
+
+    // Close modal on outside click
+    window.onclick = function (event) {
+      const modal = document.getElementById('quick-view-modal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+    // ── Footer newsletter subscription ──
+    const menuNewsletterForm = document.querySelector('.newsletter-form');
+    if (menuNewsletterForm) {
+      menuNewsletterForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const emailInput = menuNewsletterForm.querySelector('input');
+        const email = emailInput.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showToast('❌ Please enter a valid email');
+          return;
+        }
+        let subs = JSON.parse(localStorage.getItem('subscribers') || '[]');
+        if (subs.includes(email)) {
+          showToast("⚠️ You're already subscribed!");
+          return;
+        }
+        subs.push(email);
+        localStorage.setItem('subscribers', JSON.stringify(subs));
+        showToast('🎉 Subscribed successfully!');
+        emailInput.value = '';
+      });
+    }
+  </script>
+</body>
+
+</html>
