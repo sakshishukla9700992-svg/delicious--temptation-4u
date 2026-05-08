@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wishlist - Delicious Temptations 4U</title>
+  <meta name="description" content="Your saved favourites at Delicious Temptations 4U — luxury bakery in Ludhiana.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ── Page-specific overrides ── */
+    main.container { padding-top: 100px; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #999;
+      margin-bottom: 30px;
+    }
+    .breadcrumb a { color: var(--brown); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb .sep { color: #ccc; }
+
+    /* Info bar */
+    .wishlist-info-bar {
+      background: linear-gradient(135deg, var(--pink) 0%, #ffd6e7 100%);
+      border-radius: 14px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 36px;
+      color: var(--brown);
+      font-size: 0.95rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .wishlist-info-bar i { font-size: 1.3rem; color: var(--pink-dark); }
+
+    /* Card footer */
+    .wishlist-card-body {
+      padding: 16px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Bestseller badge */
+    .product-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--gold);
+      color: var(--white);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      z-index: 2;
+    }
+
+    /* Footer override for this page */
+    .footer {
+      background: #4A0E2F;
+      color: #FFF5E6;
+      padding: 70px 20px 20px;
+    }
+    .footer-col h3 { color: #D4AF37; margin-bottom: 15px; }
+    .footer-links { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a { color: #FFF5E6; text-decoration: none; transition: 0.3s; }
+    .footer-links a:hover { color: #D4AF37; padding-left: 6px; }
+    .footer-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+    .footer-col { flex: 1; min-width: 200px; }
+    .footer-logo { height: 70px; margin-bottom: 10px; }
+    .footer-text { font-size: 14px; line-height: 1.6; margin-bottom: 15px; }
+    .footer-bottom {
+      text-align: center; margin-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 15px; font-size: 13px; color: rgba(255,255,255,0.6);
+    }
+    .social-icons { display: flex; gap: 12px; }
+    .social-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid #D4AF37; color: #D4AF37;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: 0.3s;
+    }
+    .social-icon:hover { background: #D4AF37; color: #4A0E2F; transform: scale(1.1); }
+    .newsletter-form { display: flex; margin-top: 10px; }
+    .newsletter-form input {
+      padding: 10px; border: none; outline: none; flex: 1;
+      border-radius: 20px 0 0 20px;
+    }
+    .newsletter-form button {
+      background: #D4AF37; color: #4A0E2F; border: none;
+      padding: 10px 15px; border-radius: 0 20px 20px 0; cursor: pointer;
+    }
+    .newsletter-form button:hover { background: #c19b2e; }
+    @media (max-width: 768px) {
+      .footer-grid { flex-direction: column; text-align: center; }
+      .social-icons { justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════ NAVBAR ══════════ -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="./image/logo_32-removebg-preview.png" alt="Logo" style="height:40px; margin-right:10px;">
+        <span>Delicious Temptations 4U</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="offers.html">Offers</a></li>
+        <li><a href="tracking.html">Track Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav-icons">
+        <div class="nav-icon" onclick="window.location.href='menu.html'">
+          <span title="Search">🔍</span>
+        </div>
+
+        <!-- ❤️ Wishlist icon — links to this page (active) -->
+        <div class="nav-icon" onclick="window.location.href='wishlist.html'" style="color:var(--pink-dark);">
+          <i class="fas fa-heart" title="My Wishlist"></i>
+          <div class="badge" id="wishlist-badge">0</div>
+        </div>
+
+        <div class="nav-icon" onclick="window.location.href='cart.html'">
+          <span title="Cart">🛒</span>
+          <div class="badge" id="cart-badge" style="display:none;">0</div>
+        </div>
+
+        <div class="nav-icon" onclick="window.location.href='login.html'">
+          <span title="Login">👤</span>
+        </div>
+
+        <div class="hamburger" id="hamburger-btn">☰</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-close" id="drawer-close">&times;</div>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="offers.html">Offers</a></li>
+      <li><a href="tracking.html">Track Order</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="wishlist.html">❤️ My Wishlist</a></li>
+      <li><a href="login.html">Login / Sign Up</a></li>
+    </ul>
+  </div>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <main class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <span class="sep">/</span>
+      <span>My Wishlist</span>
+    </nav>
+
+    <!-- Header Row -->
+    <div class="wishlist-header">
+      <div>
+        <h1><i class="fas fa-heart" style="color:var(--pink-dark); margin-right:10px;"></i>My Wishlist</h1>
+        <p class="wishlist-count-text" id="wishlist-count-text">Loading…</p>
+      </div>
+
+      <div class="wishlist-actions-row">
+        <!-- Move All to Cart -->
+        <button class="btn btn-primary" id="move-all-btn" onclick="moveAllToCart()" style="display:none;">
+          <i class="fas fa-shopping-cart" style="margin-right:6px;"></i>Add All to Cart
+        </button>
+        <!-- Clear All -->
+        <button class="btn btn-outline" id="clear-all-btn" onclick="confirmClearWishlist()" style="display:none;">
+          <i class="fas fa-trash-alt" style="margin-right:6px;"></i>Clear All
+        </button>
+      </div>
+    </div>
+
+    <!-- Info hint -->
+    <div class="wishlist-info-bar" id="wishlist-info-bar">
+      <i class="fas fa-info-circle"></i>
+      <span>Your wishlist is saved locally — it stays even after you close the browser!</span>
+    </div>
+
+    <!-- Product Grid (filled by JS) -->
+    <div class="wishlist-grid" id="wishlist-grid"></div>
+
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Logo + about -->
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="./image/logo_32-removebg-preview.png" alt="Logo" class="footer-logo">
+          </a>
+          <p class="footer-text">Handcrafted with love, baked fresh daily in Ludhiana.</p>
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Our Menu</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="tracking.html">Track Order</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div class="footer-col">
+          <h3>Categories</h3>
+          <ul class="footer-links">
+            <li><a href="menu.html?category=Cakes">Cakes</a></li>
+            <li><a href="menu.html?category=Cupcakes">Cupcakes</a></li>
+            <li><a href="menu.html?category=Cookies">Cookies</a></li>
+            <li><a href="menu.html?category=Gift Hampers">Gift Hampers</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="footer-col">
+          <h3>Stay Updated</h3>
+          <p>Get exclusive offers &amp; sweet updates 💌</p>
+          <form class="newsletter-form" id="newsletter-form-footer">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-col">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> Ludhiana, Punjab</p>
+          <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+          <p><i class="fas fa-envelope"></i> info@delicioustemptations4u.com</p>
+          <a href="https://wa.me/919876543210" class="btn btn-primary" style="margin-top:12px; font-size:0.9rem;">
+            <i class="fab fa-whatsapp" style="margin-right:6px;"></i> Order on WhatsApp
+          </a>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Delicious Temptations 4U. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Scripts -->
+  <script src="productsData.js"></script>
+  <script src="app.js"></script>
+  <script src="wishlist.js"></script>
+
+  <script>
+    /* ══════════════════════════════════════════════════
+       WISHLIST PAGE LOGIC — wishlist.html
+       ══════════════════════════════════════════════════ */
+
+    /**
+     * initWishlistPage() is called automatically by app.js
+     * after products are loaded into the global `products` array.
+     */
+    function initWishlistPage() {
+      renderWishlistPage();
+    }
+
+    /**
+     * Render all wishlist items into #wishlist-grid.
+     * Called on load and after any add/remove action.
+     */
+    function renderWishlistPage() {
+      const fallbackWishlistImg = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80';
+      // Custom image overrides for specific wishlist products
+      const customWishlistImages = {
+        'Classic Tiered White': 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=900&q=80',
+        'Almond Biscotti': 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80'
+      };
+      const wishlist = getWishlist(); // from wishlist.js
+      const grid     = document.getElementById('wishlist-grid');
+      const countTxt = document.getElementById('wishlist-count-text');
+      const moveBtn  = document.getElementById('move-all-btn');
+      const clearBtn = document.getElementById('clear-all-btn');
+      const infoBar  = document.getElementById('wishlist-info-bar');
+
+      /* ── Update count text ── */
+      const n = wishlist.length;
+      countTxt.textContent = n === 0
+        ? 'Your wishlist is empty'
+        : `${n} item${n !== 1 ? 's' : ''} saved`;
+
+      /* ── Show / hide action buttons ── */
+      moveBtn.style.display  = n > 0 ? 'inline-flex' : 'none';
+      clearBtn.style.display = n > 0 ? 'inline-flex' : 'none';
+      if (infoBar) infoBar.style.display = n > 0 ? 'flex' : 'none';
+
+      /* ── Empty state ── */
+      if (n === 0) {
+        grid.innerHTML = `
+          <div class="wishlist-empty" style="grid-column:1/-1;">
+            <div class="empty-icon">💔</div>
+            <h2>Nothing saved yet!</h2>
+            <p>Browse our menu and tap the ❤️ on any treat you love.</p>
+            <a href="menu.html" class="btn btn-primary" style="font-size:1rem; padding:14px 34px;">
+              <i class="fas fa-utensils" style="margin-right:8px;"></i>Explore Menu
+            </a>
+          </div>`;
+        return;
+      }
+
+      /* ── Render cards ── */
+      grid.innerHTML = wishlist.map(item => {
+        // Prefer latest product image from products[], then saved image, then fallback.
+        const liveProduct = (typeof products !== 'undefined' ? products : []).find(p => p.id === item.id);
+        const overrideImage = customWishlistImages[item.name];
+        const itemImage = overrideImage || (liveProduct && liveProduct.image) || item.image || fallbackWishlistImg;
+        const dateStr = item.addedAt
+          ? new Date(item.addedAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+          : '';
+
+        return `
+          <div class="wishlist-card reveal" data-id="${item.id}">
+
+            <!-- Image wrapper -->
+            <div class="product-img-wrap"
+                 onclick="window.location.href='product.html?id=${item.id}'"
+                 role="link" tabindex="0"
+                 aria-label="View ${item.name}">
+              <img src="${itemImage}"
+                   alt="${item.name}"
+                   class="product-img"
+                   loading="lazy"
+                   onerror="this.onerror=null;this.src='${fallbackWishlistImg}'">
+
+              ${item.isBestseller ? '<div class="product-badge">Bestseller</div>' : ''}
+
+              <!-- ✕ Remove button (top-right) -->
+              <button class="wishlist-remove-btn"
+                      onclick="event.stopPropagation(); removeFromWishlist(${item.id})"
+                      title="Remove from Wishlist"
+                      aria-label="Remove ${item.name} from wishlist">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <!-- Card body -->
+            <div class="wishlist-card-body">
+              <div class="product-title"
+                   onclick="window.location.href='product.html?id=${item.id}'"
+                   style="cursor:pointer;">
+                ${item.name}
+              </div>
+
+              <div class="product-rating">
+                ${'★'.repeat(Math.round(item.rating || 0))}${'☆'.repeat(5 - Math.round(item.rating || 0))}
+                <span>(${item.reviews || 0})</span>
+              </div>
+
+              <div class="product-price-row">
+                <div class="product-price">₹${parseFloat(item.price).toFixed(2)}</div>
+                ${dateStr ? `<div class="wishlist-date">Saved ${dateStr}</div>` : ''}
+              </div>
+
+              <!-- Move to Cart -->
+              <button class="btn-move-cart" onclick="moveToCart(${item.id})" aria-label="Add ${item.name} to cart">
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+              </button>
+            </div>
+
+          </div>`;
+      }).join('');
+
+      /* Re-trigger scroll-reveal for newly rendered cards */
+      if (typeof setupScrollReveal === 'function') setupScrollReveal();
+    }
+
+    /* ── Move ALL wishlist items to cart ── */
+    function moveAllToCart() {
+      const wishlist = getWishlist();
+      if (wishlist.length === 0) return;
+
+      wishlist.forEach(item => {
+        if (typeof addToCart === 'function') addToCart(item.id);
+      });
+
+      clearWishlist();  // empties wishlist & re-renders page
+      showToast('🛒 All items moved to Cart!');
+    }
+
+    /* ── Confirm before clearing all ── */
+    function confirmClearWishlist() {
+      if (confirm('Clear your entire wishlist? This cannot be undone.')) {
+        clearWishlist();
+      }
+    }
+
+    /* ── Newsletter footer ── */
+    const footerForm = document.getElementById('newsletter-form-footer');
+    if (footerForm) {
+      footerForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const email = footerForm.querySelector('input').value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showToast('❌ Please enter a valid email');
+          return;
+        }
+        let subs = JSON.parse(localStorage.getItem('subscribers') || '[]');
+        if (subs.includes(email)) {
+          showToast('⚠️ You\'re already subscribed!');
+          return;
+        }
+        subs.push(email);
+        localStorage.setItem('subscribers', JSON.stringify(subs));
+        showToast('🎉 Subscribed successfully!');
+        footerForm.querySelector('input').value = '';
+      });
+    }
+  </script>
+
+</body>
+</html>

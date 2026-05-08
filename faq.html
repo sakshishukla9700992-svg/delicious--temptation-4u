@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ - Delicious Temptations 4U</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .faq-hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--white);
+      border-radius: 20px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .faq-search {
+      max-width: 600px;
+      margin: 30px auto 0;
+      position: relative;
+    }
+
+    .faq-search input {
+      width: 100%;
+      padding: 15px 20px 15px 50px;
+      border: 2px solid #ddd;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      outline: none;
+      transition: var(--transition);
+      font-family: var(--font-body);
+    }
+
+    .faq-search input:focus {
+      border-color: var(--pink-dark);
+    }
+
+    .faq-search span {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #888;
+    }
+
+    .faq-layout {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 80px;
+      align-items: flex-start;
+    }
+
+    .faq-nav {
+      width: 250px;
+      background: var(--white);
+      padding: 20px 0;
+      border-radius: 15px;
+      box-shadow: var(--shadow-soft);
+      position: sticky;
+      top: 100px;
+      flex-shrink: 0;
+    }
+
+    .faq-nav-item {
+      padding: 15px 30px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+      color: var(--brown);
+    }
+
+    .faq-nav-item:hover {
+      background: var(--cream);
+    }
+
+    .faq-nav-item.active {
+      border-color: var(--pink-dark);
+      background: var(--cream);
+      color: var(--pink-dark);
+      font-weight: 600;
+    }
+
+    .faq-content {
+      flex-grow: 1;
+    }
+
+    .faq-category-block {
+      margin-bottom: 40px;
+    }
+
+    .faq-category-title {
+      font-size: 1.8rem;
+      color: var(--brown);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .faq-item {
+      background: var(--white);
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .faq-q {
+      padding: 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .faq-q:hover {
+      color: var(--pink-dark);
+    }
+
+    .faq-q::after {
+      content: '+';
+      font-size: 1.5rem;
+      transition: transform 0.3s;
+    }
+
+    .faq-q.active::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: #fafafa;
+    }
+
+    .faq-a p {
+      padding: 0 20px 20px;
+      color: #555;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      background: var(--white);
+      border-radius: 15px;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .faq-layout {
+        flex-direction: column;
+      }
+
+      .faq-nav {
+        width: 100%;
+        position: static;
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+      }
+
+      .faq-nav-item {
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 10px 20px;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="./image/logo_32-removebg-preview.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <span>Delicious Temptations 4U</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="offers.html">Offers</a></li>
+        <li><a href="tracking.html">Track Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-icons">
+        <div class="nav-icon" onclick="window.location.href='menu.html'"><span title="Search">🔍</span></div>
+        <!-- ❤️ Wishlist — links to wishlist.html -->
+        <div class="nav-icon" onclick="window.location.href='wishlist.html'" title="My Wishlist">
+          <i class="fas fa-heart"></i>
+          <div class="badge" id="wishlist-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='cart.html'">
+          <span title="Cart">🛒</span>
+          <div class="badge" id="cart-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='login.html'"><span title="Login">👤</span></div>
+        <div class="hamburger" id="hamburger-btn">☰</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-close" id="drawer-close">&times;</div>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="offers.html">Offers</a></li>
+      <li><a href="tracking.html">Track Order</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="login.html">Login / Sign Up</a></li>
+    </ul>
+  </div>
+
+  <main class="container" style="padding-top: 80px;">
+
+    <div class="faq-hero reveal">
+      <h1>Frequently Asked Questions</h1>
+      <p>Find answers to common questions about our products, ordering process, delivery, and more.</p>
+      <div class="faq-search">
+        <span>🔍</span>
+        <input type="text" id="faq-search-input" placeholder="Search for a question..." onkeyup="filterFAQ()">
+      </div>
+    </div>
+
+    <div class="faq-layout reveal">
+      <div class="faq-nav">
+        <div class="faq-nav-item active" onclick="scrollToCat('cat-ordering')">Ordering</div>
+        <div class="faq-nav-item" onclick="scrollToCat('cat-delivery')">Delivery</div>
+        <div class="faq-nav-item" onclick="scrollToCat('cat-payment')">Payment</div>
+        <div class="faq-nav-item" onclick="scrollToCat('cat-custom')">Custom Cakes</div>
+        <div class="faq-nav-item" onclick="scrollToCat('cat-returns')">Returns</div>
+      </div>
+
+      <div class="faq-content">
+        <div id="no-results" class="no-results">
+          <h3>No questions found matching your search.</h3>
+          <p>Please try a different keyword or contact our support team.</p>
+        </div>
+
+        <!-- Ordering -->
+        <div class="faq-category-block" id="cat-ordering">
+          <h2 class="faq-category-title">Ordering</h2>
+
+          <div class="faq-item">
+            <div class="faq-q">How do I place an order?</div>
+            <div class="faq-a">
+              <p>You can easily place an order through our website. Simply browse our menu, add the desired items to
+                your cart, and proceed to checkout.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I change or cancel my order?</div>
+            <div class="faq-a">
+              <p>Orders can be changed or canceled up to 24 hours before the scheduled delivery date. Please contact our
+                support team immediately if you need to make changes.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Do you have an offline store?</div>
+            <div class="faq-a">
+              <p>Yes! We have a bakery located at 123 Bakery Lane, Ludhiana. You can visit us to purchase available
+                items or pick up your pre-orders.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Do you offer vegan or gluten-free options?</div>
+            <div class="faq-a">
+              <p>Yes, we have a dedicated selection of vegan and gluten-free cakes and treats. You can find them by
+                using the filters on our Menu page.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Is there a minimum order value?</div>
+            <div class="faq-a">
+              <p>There is no minimum order value for pick-up. For delivery, the minimum order value is ₹300.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery -->
+        <div class="faq-category-block" id="cat-delivery">
+          <h2 class="faq-category-title">Delivery</h2>
+
+          <div class="faq-item">
+            <div class="faq-q">Where do you deliver?</div>
+            <div class="faq-a">
+              <p>We currently deliver across Ludhiana and select neighboring areas within a 15km radius of our bakery.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Do you offer same-day delivery?</div>
+            <div class="faq-a">
+              <p>Yes, same-day delivery is available for select items if the order is placed before 4:00 PM.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Is midnight delivery available?</div>
+            <div class="faq-a">
+              <p>Yes, we offer midnight delivery for surprises! An additional midnight delivery charge of ₹150 applies.
+                Please select the appropriate time slot during checkout.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How are the cakes transported?</div>
+            <div class="faq-a">
+              <p>All our cakes and delicate items are transported in temperature-controlled vans to ensure they reach
+                you in perfect condition.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What are the delivery charges?</div>
+            <div class="faq-a">
+              <p>Delivery is free for orders above ₹500. For orders below ₹500, a flat delivery fee of ₹50 is applied.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="faq-category-block" id="cat-payment">
+          <h2 class="faq-category-title">Payment</h2>
+
+          <div class="faq-item">
+            <div class="faq-q">What payment methods do you accept?</div>
+            <div class="faq-a">
+              <p>We accept all major Credit/Debit cards, Net Banking, UPI (Google Pay, PhonePe, Paytm), and Cash on
+                Delivery.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Is it safe to pay online?</div>
+            <div class="faq-a">
+              <p>Absolutely. Our payment gateway is highly secure and PCI-DSS compliant. We do not store your card
+                details on our servers.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Are there any hidden charges?</div>
+            <div class="faq-a">
+              <p>No, there are no hidden charges. The total amount displayed at checkout (including GST and delivery
+                fee) is the final amount you pay.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I pay using Cash on Delivery for custom cakes?</div>
+            <div class="faq-a">
+              <p>For custom designer cakes above ₹1500, we require a 50% advance payment online. The rest can be paid
+                via COD.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How do I apply a coupon code?</div>
+            <div class="faq-a">
+              <p>You can enter your coupon code in the "Order Summary" section on the Cart page before proceeding to
+                checkout.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Cakes -->
+        <div class="faq-category-block" id="cat-custom">
+          <h2 class="faq-category-title">Custom Cakes</h2>
+
+          <div class="faq-item">
+            <div class="faq-q">How far in advance should I order a custom cake?</div>
+            <div class="faq-a">
+              <p>We recommend placing your order at least 3-4 days in advance for complex designer cakes to ensure we
+                can accommodate your design requirements.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can you replicate a cake design from a photo?</div>
+            <div class="faq-a">
+              <p>Yes! You can share reference images with our team via WhatsApp or Email, and we will do our best to
+                recreate the design.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What flavors are available for custom cakes?</div>
+            <div class="faq-a">
+              <p>You can choose from Chocolate Truffle, Red Velvet, Vanilla Mango, Butterscotch, Black Forest, and many
+                premium exotic flavors.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Do you make photo cakes?</div>
+            <div class="faq-a">
+              <p>Yes, we offer edible photo cakes. You can upload a high-resolution image during the custom cake
+                ordering process.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I request a fondant-free custom cake?</div>
+            <div class="faq-a">
+              <p>Absolutely! We can design beautiful cakes using buttercream, whipped cream, or chocolate ganache
+                without using fondant.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Returns -->
+        <div class="faq-category-block" id="cat-returns">
+          <h2 class="faq-category-title">Returns & Refunds</h2>
+
+          <div class="faq-item">
+            <div class="faq-q">What is your return policy?</div>
+            <div class="faq-a">
+              <p>As our products are perishable, we do not accept returns. However, if you receive a damaged or
+                incorrect product, please contact us immediately.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">My cake arrived damaged. What should I do?</div>
+            <div class="faq-a">
+              <p>We apologize for the inconvenience. Please take a photo of the damaged cake and contact our support
+                team within 2 hours of delivery for a replacement or refund.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How long does a refund take?</div>
+            <div class="faq-a">
+              <p>Approved refunds are processed within 3-5 business days and will be credited back to the original
+                method of payment.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">I didn't like the taste. Can I get a refund?</div>
+            <div class="faq-a">
+              <p>Taste is subjective, and we cannot offer refunds based solely on personal preference. However, we
+                ensure all products are made fresh with high-quality ingredients.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What if my delivery is late?</div>
+            <div class="faq-a">
+              <p>We strive to deliver on time. If your delivery is significantly delayed due to unforeseen
+                circumstances, we will communicate with you and compensate appropriately.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container text-center">
+      <p style="color:rgba(255,255,255,0.6);">&copy; 2026 Delicious Temptations 4U.</p>
+    </div>
+  </footer>
+
+  <script src="productsData.js"></script>
+  <script src="app.js"></script>
+  <!-- Wishlist engine: must come after app.js -->
+  <script src="wishlist.js"></script>
+  <script>
+    // Accordion Logic
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        q.classList.toggle('active');
+        const a = q.nextElementSibling;
+        if (q.classList.contains('active')) {
+          a.style.maxHeight = a.scrollHeight + "px";
+        } else {
+          a.style.maxHeight = "0";
+        }
+      });
+    });
+
+    // Scroll to category
+    function scrollToCat(id) {
+      document.querySelectorAll('.faq-nav-item').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const el = document.getElementById(id);
+      const y = el.getBoundingClientRect().top + window.scrollY - 150;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    // Live Search
+    function filterFAQ() {
+      const input = document.getElementById('faq-search-input').value.toLowerCase();
+      const items = document.querySelectorAll('.faq-item');
+      let foundAny = false;
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(input)) {
+          item.style.display = 'block';
+          foundAny = true;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      // Hide empty categories
+      document.querySelectorAll('.faq-category-block').forEach(block => {
+        const visibleItems = block.querySelectorAll('.faq-item[style="display: block;"]');
+        if (visibleItems.length === 0 && input !== '') {
+          block.style.display = 'none';
+        } else {
+          block.style.display = 'block';
+        }
+      });
+
+      document.getElementById('no-results').style.display = foundAny || input === '' ? 'none' : 'block';
+    }
+  </script>
+</body>
+
+</html>

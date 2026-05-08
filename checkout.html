@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Delicious Temptations 4U</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+      margin-bottom: 60px;
+    }
+
+    .form-section {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .form-title {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: var(--brown);
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--pink-dark);
+    }
+
+    /* Payment Methods */
+    .payment-option {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .payment-header {
+      padding: 15px;
+      background: #fafafa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .payment-body {
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      display: none;
+    }
+
+    .payment-option.active {
+      border-color: var(--pink-dark);
+    }
+
+    .payment-option.active .payment-header {
+      background: var(--cream);
+    }
+
+    .payment-option.active .payment-body {
+      display: block;
+    }
+
+    input[type="radio"] {
+      accent-color: var(--pink-dark);
+      transform: scale(1.2);
+    }
+
+    /* Summary Side */
+    .summary-side {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow-soft);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .co-item {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+
+    .co-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .co-item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .co-item-meta {
+      color: #888;
+      font-size: 0.8rem;
+    }
+
+    .co-item-price {
+      font-weight: bold;
+      color: var(--pink-dark);
+      margin-left: auto;
+    }
+
+    .co-totals {
+      margin-top: 20px;
+    }
+
+    .co-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .co-row.total {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--brown);
+      border-top: 2px solid #eee;
+      padding-top: 15px;
+      margin-top: 10px;
+    }
+
+    /* Success Modal */
+    .success-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .success-content {
+      background: var(--white);
+      padding: 50px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-side {
+        position: static;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="./image/logo_32-removebg-preview.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <span>Delicious Temptations 4U</span></a>
+      <div style="font-weight: 600; color: var(--brown);">Secure Checkout 🔒</div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top: 100px;">
+
+    <div class="checkout-layout">
+      <!-- Left: Forms -->
+      <div class="checkout-forms">
+
+        <form id="checkout-form" onsubmit="handlePlaceOrder(event)">
+          <!-- Delivery Address -->
+          <div class="form-section">
+            <h3 class="form-title">Delivery Details</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" required placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" required placeholder="+91 9876543210">
+              </div>
+              <div class="form-group full">
+                <label>Address Line 1</label>
+                <input type="text" required placeholder="House No, Building, Street">
+              </div>
+              <div class="form-group full">
+                <label>Address Line 2 (Optional)</label>
+                <input type="text" placeholder="Landmark, Area">
+              </div>
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" required value="Ludhiana" readonly style="background:#f5f5f5;">
+              </div>
+              <div class="form-group">
+                <label>Pincode</label>
+                <input type="text" required placeholder="141001">
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery Slot & Instructions -->
+          <div class="form-section">
+            <h3 class="form-title">Delivery Preferences</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Delivery Date</label>
+                <select id="del-date" required>
+                  <option value="today">Today</option>
+                  <option value="tomorrow" selected>Tomorrow</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Time Slot</label>
+                <select id="del-time" required>
+                  <option value="10-12">10:00 AM - 12:00 PM</option>
+                  <option value="12-2">12:00 PM - 02:00 PM</option>
+                  <option value="2-5">02:00 PM - 05:00 PM</option>
+                  <option value="5-8">05:00 PM - 08:00 PM</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label>Special Instructions (Optional)</label>
+                <textarea rows="2" placeholder="E.g., Call before reaching, ring the bell twice..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="form-section">
+            <h3 class="form-title">Payment Method</h3>
+
+            <div class="payment-option active" id="pay-upi">
+              <div class="payment-header" onclick="selectPayment('pay-upi')">
+                <input type="radio" name="payment" value="UPI" checked>
+                <span>💳 UPI (GPay, PhonePe, Paytm)</span>
+              </div>
+              <div class="payment-body">
+                <div class="form-group">
+                  <label>Enter UPI ID</label>
+                  <input type="text" placeholder="example@upi">
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-option" id="pay-card">
+              <div class="payment-header" onclick="selectPayment('pay-card')">
+                <input type="radio" name="payment" value="Card">
+                <span>🏦 Credit / Debit Card</span>
+              </div>
+              <div class="payment-body">
+                <div class="form-group full">
+                  <label>Card Number</label>
+                  <input type="text" placeholder="XXXX XXXX XXXX XXXX">
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Expiry (MM/YY)</label>
+                    <input type="text" placeholder="MM/YY">
+                  </div>
+                  <div class="form-group">
+                    <label>CVV</label>
+                    <input type="password" placeholder="***" maxlength="3">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-option" id="pay-cod">
+              <div class="payment-header" onclick="selectPayment('pay-cod')">
+                <input type="radio" name="payment" value="COD">
+                <span>💵 Cash on Delivery</span>
+              </div>
+              <div class="payment-body">
+                <p style="color:#666;">Pay with cash when your order arrives. Please keep exact change ready.</p>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; font-size:1.2rem; padding: 15px;">Place Order
+            🎂</button>
+        </form>
+      </div>
+
+      <!-- Right: Summary -->
+      <aside class="summary-side">
+        <h3 class="form-title">Order Summary</h3>
+        <div id="co-items-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+          <!-- JS -->
+        </div>
+
+        <div class="co-totals">
+          <div class="co-row">
+            <span>Subtotal</span>
+            <span id="co-sub">₹0.00</span>
+          </div>
+          <div class="co-row">
+            <span>Delivery</span>
+            <span id="co-del">₹0.00</span>
+          </div>
+          <div class="co-row">
+            <span>GST (5%)</span>
+            <span id="co-gst">₹0.00</span>
+          </div>
+          <div class="co-row" id="co-disc-row" style="display:none; color: #28a745;">
+            <span>Discount</span>
+            <span id="co-disc">-₹0.00</span>
+          </div>
+          <div class="co-row total">
+            <span>Total Payable</span>
+            <span id="co-total">₹0.00</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container text-center">
+      <p style="color:rgba(255,255,255,0.6);">&copy; 2026 Delicious Temptations 4U. Secure Checkout.</p>
+    </div>
+  </footer>
+
+  <!-- Success Modal -->
+  <div class="success-modal" id="success-modal">
+    <div class="success-content">
+      <div class="success-icon">✅</div>
+      <h2 style="color:var(--brown); margin-bottom: 10px;">Order Placed Successfully!</h2>
+      <p style="margin-bottom: 20px; color:#555;">Thank you for your purchase. Your freshly baked happiness is on its
+        way.</p>
+      <div style="background:var(--cream); padding: 15px; border-radius:10px; margin-bottom: 20px;">
+        Order ID: <strong id="success-oid" style="color:var(--pink-dark);">DT001</strong>
+      </div>
+      <button class="btn btn-primary" onclick="window.location.href='tracking.html'">Track Order</button>
+      <button class="btn btn-outline" style="margin-top:10px; width:100%;"
+        onclick="window.location.href='index.html'">Back to Home</button>
+    </div>
+  </div>
+
+  <script src="productsData.js"></script>
+  <script src="app.js"></script>
+  <script>
+    function initCheckoutPage() {
+      if (cart.length === 0) {
+        window.location.href = 'menu.html';
+        return;
+      }
+
+      // Populate Items
+      const list = document.getElementById('co-items-list');
+      list.innerHTML = cart.map(item => `
+        <div class="co-item">
+          <img src="${item.image}" alt="">
+          <div>
+            <div class="co-item-name">${item.name}</div>
+            <div class="co-item-meta">Qty: ${item.qty}</div>
+          </div>
+          <div class="co-item-price">${formatCurrency(item.price * item.qty)}</div>
+        </div>
+      `).join('');
+
+      // Populate Totals
+      const infoStr = localStorage.getItem('dt_order_info');
+      if (infoStr) {
+        const info = JSON.parse(infoStr);
+        document.getElementById('co-sub').textContent = formatCurrency(info.subtotal);
+        document.getElementById('co-del').textContent = info.delivery === 0 ? 'FREE' : formatCurrency(info.delivery);
+        document.getElementById('co-gst').textContent = formatCurrency(info.gst);
+
+        if (info.discountAmount > 0) {
+          document.getElementById('co-disc-row').style.display = 'flex';
+          document.getElementById('co-disc').textContent = '-' + formatCurrency(info.discountAmount);
+        }
+        document.getElementById('co-total').textContent = formatCurrency(info.total);
+      }
+    }
+
+    function selectPayment(id) {
+      document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelector(`#${id} input[type="radio"]`).checked = true;
+    }
+
+    function handlePlaceOrder(e) {
+      e.preventDefault();
+
+      // Simulate API Call
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Processing... <span style="font-size:1.2rem">⏳</span>';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        // Generate random Order ID
+        const orderId = 'DT' + Math.floor(Math.random() * 90000 + 10000);
+        document.getElementById('success-oid').textContent = orderId;
+
+        // Save to mock order history for tracking
+        localStorage.setItem('dt_last_order', orderId);
+
+        // Clear Cart
+        cart = [];
+        saveCart();
+
+        // Show Modal
+        document.getElementById('success-modal').style.display = 'flex';
+      }, 1500);
+    }
+  </script>
+</body>
+
+</html>

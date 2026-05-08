@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - Delicious Temptations 4U</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Product Detail Layout */
+    .breadcrumb {
+      margin: 20px 0;
+      color: var(--brown-light);
+      font-size: 0.9rem;
+    }
+    .breadcrumb a { color: var(--brown); font-weight: 500; }
+    
+    .product-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 60px;
+    }
+
+    /* Gallery */
+    .gallery-main {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+    .gallery-thumbs {
+      display: flex;
+      gap: 15px;
+    }
+    .thumb {
+      width: calc(25% - 11.25px);
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: var(--transition);
+      border: 2px solid transparent;
+    }
+    .thumb.active, .thumb:hover {
+      opacity: 1;
+      border-color: var(--pink-dark);
+    }
+
+    /* Info */
+    .pd-title {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    .pd-rating {
+      color: var(--gold);
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pd-rating span { color: #666; font-size: 1rem; }
+    .pd-price {
+      font-size: 2rem;
+      color: var(--pink-dark);
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    /* Options */
+    .option-group { margin-bottom: 25px; }
+    .option-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--brown);
+    }
+    
+    .weight-pills {
+      display: flex;
+      gap: 15px;
+    }
+    .w-pill {
+      padding: 10px 25px;
+      border: 2px solid var(--brown-light);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--white);
+    }
+    .w-pill.active {
+      background: var(--pink-dark);
+      color: var(--white);
+      border-color: var(--pink-dark);
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      outline: none;
+    }
+    select:focus, textarea:focus { border-color: var(--pink-dark); }
+    
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 2px solid #ddd;
+      border-radius: 30px;
+      overflow: hidden;
+    }
+    .qty-btn {
+      width: 40px; height: 40px;
+      background: var(--white);
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .qty-btn:hover { background: #eee; }
+    .qty-input {
+      width: 50px; height: 40px;
+      border: none; text-align: center;
+      font-weight: bold; font-size: 1.1rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .action-buttons .btn { flex: 1; padding: 15px; font-size: 1.1rem; }
+
+    .delivery-est {
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--cream);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    }
+
+    /* Tabs */
+    .tabs-container {
+      margin-top: 60px;
+    }
+    .tabs-header {
+      display: flex;
+      border-bottom: 2px solid #eee;
+      margin-bottom: 30px;
+    }
+    .tab-btn {
+      padding: 15px 30px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      position: relative;
+    }
+    .tab-btn.active { color: var(--pink-dark); }
+    .tab-btn.active::after {
+      content: ''; position: absolute;
+      bottom: -2px; left: 0; width: 100%; height: 2px;
+      background: var(--pink-dark);
+    }
+    .tab-content { display: none; line-height: 1.8; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+    /* Reviews */
+    .review-item {
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .review-header {
+      display: flex; justify-content: space-between; margin-bottom: 10px;
+    }
+    .reviewer-name { font-weight: 600; color: var(--brown); }
+    .review-stars { color: var(--gold); }
+
+    @media (max-width: 900px) {
+      .product-detail-grid { grid-template-columns: 1fr; }
+      .gallery-main { height: 400px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">🎂 <span>Delicious Temptations 4U</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="offers.html">Offers</a></li>
+        <li><a href="tracking.html">Track Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-icons">
+        <div class="nav-icon" onclick="window.location.href='menu.html'">
+          <span title="Search">🔍</span>
+        </div>
+        <!-- ❤️ Wishlist — links to wishlist.html -->
+        <div class="nav-icon" onclick="window.location.href='wishlist.html'" title="My Wishlist">
+          <i class="fas fa-heart"></i>
+          <div class="badge" id="wishlist-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='cart.html'">
+          <span title="Cart">🛒</span>
+          <div class="badge" id="cart-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='login.html'">
+          <span title="Login">👤</span>
+        </div>
+        <div class="hamburger" id="hamburger-btn">☰</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-close" id="drawer-close">&times;</div>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="offers.html">Offers</a></li>
+      <li><a href="tracking.html">Track Order</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="login.html">Login / Sign Up</a></li>
+    </ul>
+  </div>
+
+  <main class="container">
+    <div class="breadcrumb" id="breadcrumb">
+      <a href="index.html">Home</a> > <a href="menu.html">Menu</a> > <span id="bc-name">Product</span>
+    </div>
+
+    <div class="product-detail-grid">
+      <!-- Left: Gallery -->
+      <div class="pd-gallery">
+        <img src="" id="main-img" class="gallery-main" alt="Product">
+        <div class="gallery-thumbs" id="gallery-thumbs">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Right: Info & Actions -->
+      <div class="pd-info">
+        <h1 class="pd-title" id="pd-title">Loading...</h1>
+        <div class="pd-rating" id="pd-rating">
+          ★★★★★ <span>(0 Reviews)</span>
+        </div>
+        <div class="pd-price" id="pd-price">₹0.00</div>
+
+        <!-- Weight (For Cakes) -->
+        <div class="option-group" id="weight-group" style="display:none;">
+          <label>Select Weight</label>
+          <div class="weight-pills">
+            <div class="w-pill active" onclick="selectWeight('0.5kg', this)">0.5 kg</div>
+            <div class="w-pill" onclick="selectWeight('1kg', this)">1 kg</div>
+            <div class="w-pill" onclick="selectWeight('2kg', this)">2 kg</div>
+          </div>
+        </div>
+
+        <!-- Flavor -->
+        <div class="option-group">
+          <label>Select Flavor</label>
+          <select id="flavor-select">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <!-- Message -->
+        <div class="option-group">
+          <label>Custom Message on Cake (Max 50 chars)</label>
+          <textarea id="custom-message" rows="2" maxlength="50" placeholder="E.g., Happy Birthday John!"></textarea>
+        </div>
+
+        <!-- Quantity -->
+        <div class="option-group">
+          <label>Quantity</label>
+          <div class="qty-stepper">
+            <button class="qty-btn" onclick="updateLocalQty(-1)">-</button>
+            <input type="text" class="qty-input" id="qty-input" value="1" readonly>
+            <button class="qty-btn" onclick="updateLocalQty(1)">+</button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="handleAddToCart()">
+            <i class="fas fa-shopping-cart" style="margin-right:8px;"></i>Add to Cart
+          </button>
+          <!-- ❤️ Real wishlist toggle button — state set by initProductPage() -->
+          <button class="btn btn-outline wishlist-btn" id="pd-wishlist-btn"
+                  onclick="toggleWishlistOnPage(this)"
+                  title="Add to Wishlist">
+            <i class="far fa-heart" style="margin-right:8px;"></i>
+            <span class="wl-label">Wishlist</span>
+          </button>
+        </div>
+
+        <div class="delivery-est">
+          🚚 Order now for delivery by <span id="delivery-date" style="color:var(--pink-dark);">Tomorrow</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Section -->
+    <div class="tabs-container">
+      <div class="tabs-header">
+        <button class="tab-btn active" onclick="switchTab('desc', this)">Description</button>
+        <button class="tab-btn" onclick="switchTab('ingredients', this)">Ingredients</button>
+        <button class="tab-btn" onclick="switchTab('delivery', this)">Delivery Info</button>
+        <button class="tab-btn" onclick="switchTab('reviews', this)">Reviews (5)</button>
+      </div>
+      
+      <div class="tab-content active" id="tab-desc">
+        <p>Indulge in our freshly baked masterpiece, crafted with the finest ingredients and a touch of magic. Each layer promises a burst of authentic flavor, perfectly balanced to satisfy your sweetest cravings. Whether it's a celebration or a midnight treat, this is exactly what you need.</p>
+      </div>
+      <div class="tab-content" id="tab-ingredients">
+        <p><strong>Main Ingredients:</strong> Premium Flour, Farm Fresh Eggs, Organic Butter, Pure Cane Sugar, Belgian Chocolate/Fresh Fruit Extracts, Baking Powder, Salt.</p>
+        <p><em>Allergen Information: Contains dairy, gluten, and eggs. May contain traces of nuts.</em></p>
+      </div>
+      <div class="tab-content" id="tab-delivery">
+        <p>We ensure safe and hygienic delivery right to your doorstep. All our products are transported in temperature-controlled vehicles to maintain freshness and shape.</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Same day delivery available for orders placed before 4 PM.</li>
+          <li>Midnight delivery available (Extra charges apply).</li>
+          <li>Free delivery on orders above ₹500.</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="tab-reviews">
+        <div class="review-item">
+          <div class="review-header">
+            <span class="reviewer-name">Amit Kumar</span>
+            <span class="review-stars">★★★★★</span>
+          </div>
+          <p>Absolutely delicious! The texture was perfect and it looked exactly like the picture.</p>
+        </div>
+        <div class="review-item">
+          <div class="review-header">
+            <span class="reviewer-name">Priya S.</span>
+            <span class="review-stars">★★★★☆</span>
+          </div>
+          <p>Very fresh and tasty. Delivery was on time.</p>
+        </div>
+        <div class="review-item">
+          <div class="review-header">
+            <span class="reviewer-name">Rahul Verma</span>
+            <span class="review-stars">★★★★★</span>
+          </div>
+          <p>Ordered this for my mom's birthday. She loved it!</p>
+        </div>
+        <div class="review-item">
+          <div class="review-header">
+            <span class="reviewer-name">Neha Gupta</span>
+            <span class="review-stars">★★★★★</span>
+          </div>
+          <p>The flavor is so rich and authentic. Highly recommended.</p>
+        </div>
+        <div class="review-item">
+          <div class="review-header">
+            <span class="reviewer-name">Vikram Singh</span>
+            <span class="review-stars">★★★★☆</span>
+          </div>
+          <p>Great quality as always. Delicious Temptations never disappoints.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Delicious Temptations 4U</h3>
+          <p>Handcrafted with love, baked fresh daily in Ludhiana.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="productsData.js"></script>
+  <script src="app.js"></script>
+  <!-- Wishlist engine — must come after app.js -->
+  <script src="wishlist.js"></script>
+  <script>
+    let currentProduct = null;
+    let selectedWeightObj = '0.5kg';
+    let localQty = 1;
+    let basePrice = 0;
+
+    async function initProductPage() {
+      // Ensure products are loaded (app.js handles loadProducts, but just in case we await here implicitly via setTimeout if needed, or better, we wait for products array to populate)
+      if(products.length === 0) {
+        setTimeout(initProductPage, 100);
+        return;
+      }
+
+      const id = parseInt(getQueryParam('id')) || 1; // Default to 1 if no ID
+      currentProduct = products.find(p => p.id === id);
+
+      if(!currentProduct) {
+        document.querySelector('.product-detail-grid').innerHTML = '<h2>Product not found</h2>';
+        return;
+      }
+
+      basePrice = currentProduct.price;
+
+      // Populate Data
+      document.getElementById('bc-name').textContent = currentProduct.name;
+      document.getElementById('pd-title').textContent = currentProduct.name;
+      document.getElementById('pd-rating').innerHTML = `${'★'.repeat(Math.round(currentProduct.rating))}${'☆'.repeat(5-Math.round(currentProduct.rating))} <span>(${currentProduct.reviews} Reviews)</span>`;
+      
+      // Images
+      const mainImg = document.getElementById('main-img');
+      mainImg.src = currentProduct.image;
+      
+      // Create some variations for thumbnails using different crop/zoom from same unsplash ID
+      const thumbsHtml = `
+        <img src="${currentProduct.image}" class="thumb active" onclick="switchImg(this, '${currentProduct.image}')">
+        <img src="${currentProduct.image}&crop=faces" class="thumb" onclick="switchImg(this, '${currentProduct.image}&crop=faces')">
+        <img src="${currentProduct.image}&crop=entropy" class="thumb" onclick="switchImg(this, '${currentProduct.image}&crop=entropy')">
+        <img src="${currentProduct.image}&crop=edges" class="thumb" onclick="switchImg(this, '${currentProduct.image}&crop=edges')">
+      `;
+      document.getElementById('gallery-thumbs').innerHTML = thumbsHtml;
+
+      // Weight Selector (Only for Cakes)
+      if(currentProduct.category === 'Cakes') {
+        document.getElementById('weight-group').style.display = 'block';
+      }
+
+      // Flavor Dropdown
+      const flavorSelect = document.getElementById('flavor-select');
+      flavorSelect.innerHTML = `
+        <option value="${currentProduct.flavor}">${currentProduct.flavor}</option>
+        <option value="Vanilla">Vanilla</option>
+        <option value="Chocolate">Chocolate</option>
+        <option value="Butterscotch">Butterscotch</option>
+        <option value="Pineapple">Pineapple</option>
+      `;
+
+      // Set Tomorrow's date
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      document.getElementById('delivery-date').textContent =
+        tomorrow.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+      updatePriceDisplay();
+
+      // ── Sync wishlist button state for this product ──
+      syncProductWishlistBtn();
+    }
+
+    function switchImg(el, src) {
+      document.getElementById('main-img').src = src;
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function selectWeight(weight, el) {
+      selectedWeightObj = weight;
+      document.querySelectorAll('.w-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      updatePriceDisplay();
+    }
+
+    function updateLocalQty(change) {
+      localQty += change;
+      if (localQty < 1) localQty = 1;
+      document.getElementById('qty-input').value = localQty;
+      updatePriceDisplay();
+    }
+
+    function updatePriceDisplay() {
+      let finalPrice = basePrice;
+      if (currentProduct.category === 'Cakes') {
+        if (selectedWeightObj === '1kg') finalPrice = basePrice * 1.8;
+        if (selectedWeightObj === '2kg') finalPrice = basePrice * 3.4;
+      }
+      document.getElementById('pd-price').textContent = formatCurrency(finalPrice * localQty);
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    function handleAddToCart() {
+      const flavor = document.getElementById('flavor-select').value;
+      const weight = currentProduct.category === 'Cakes' ? selectedWeightObj : null;
+      // addToCart is global from app.js
+      addToCart(currentProduct.id, localQty, flavor, weight);
+    }
+
+    /* ── Wishlist helpers for product detail page ── */
+
+    /**
+     * Sync the ❤️ button on the product detail page to reflect
+     * the current wishlist state (called after product loads).
+     */
+    function syncProductWishlistBtn() {
+      if (!currentProduct) return;
+      const btn = document.getElementById('pd-wishlist-btn');
+      if (!btn) return;
+      const inList = isInWishlist(currentProduct.id);
+      btn.classList.toggle('wishlisted', inList);
+      btn.querySelector('i').className = (inList ? 'fas' : 'far') + ' fa-heart';
+      btn.querySelector('.wl-label').textContent = inList ? 'Wishlisted' : 'Wishlist';
+      btn.title = inList ? 'Remove from Wishlist' : 'Add to Wishlist';
+      // Keep outline colour in sync
+      if (inList) {
+        btn.style.borderColor = 'var(--pink-dark)';
+        btn.style.color = 'var(--pink-dark)';
+      } else {
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      }
+    }
+
+    /**
+     * Called when the user clicks the Wishlist button on the product page.
+     * Delegates to wishlist.js toggleWishlist() then re-syncs this page's btn.
+     */
+    function toggleWishlistOnPage(btnEl) {
+      if (!currentProduct) return;
+      toggleWishlist(currentProduct.id, btnEl); // wishlist.js
+      // Heart-pop CSS animation
+      btnEl.classList.add('heart-pop');
+      setTimeout(() => btnEl.classList.remove('heart-pop'), 600);
+      syncProductWishlistBtn();
+    }
+  </script>
+</body>
+</html>

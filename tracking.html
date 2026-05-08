@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Order - Delicious Temptations 4U</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .tracking-container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .track-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .track-header h2 {
+      color: var(--brown);
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .track-input-box {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .track-input-box input {
+      flex: 1;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      outline: none;
+      font-family: var(--font-body);
+    }
+
+    .track-input-box input:focus {
+      border-color: var(--pink-dark);
+    }
+
+    .track-input-box button {
+      padding: 0 30px;
+      font-size: 1.1rem;
+    }
+
+    .demo-ids {
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 40px;
+    }
+
+    .demo-ids span {
+      color: var(--pink-dark);
+      font-weight: 500;
+      cursor: pointer;
+      margin: 0 5px;
+    }
+
+    /* Result Area */
+    .track-result {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .order-info-card {
+      background: var(--cream);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .info-chunk {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .info-val {
+      font-weight: 600;
+      color: var(--brown);
+      font-size: 1.1rem;
+    }
+
+    /* Stepper */
+    .stepper {
+      position: relative;
+      padding-left: 30px;
+      margin-top: 20px;
+    }
+
+    .stepper::before {
+      content: '';
+      position: absolute;
+      left: 39px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #eee;
+      z-index: 1;
+    }
+
+    .step {
+      position: relative;
+      margin-bottom: 30px;
+      padding-left: 40px;
+      z-index: 2;
+      opacity: 0.4;
+      transition: all 0.5s ease;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-icon {
+      position: absolute;
+      left: -5px;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 2px #ddd;
+    }
+
+    .step.completed {
+      opacity: 1;
+    }
+
+    .step.completed .step-icon {
+      background: var(--pink-dark);
+      color: var(--white);
+      box-shadow: 0 0 0 2px var(--pink-dark);
+    }
+
+    .step.active {
+      opacity: 1;
+    }
+
+    .step.active .step-icon {
+      background: var(--gold);
+      color: var(--white);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3);
+      animation: pulse-step 1.5s infinite;
+    }
+
+    .step-title {
+      font-weight: 600;
+      color: var(--brown);
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .step-time {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    @keyframes pulse-step {
+      0% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Live Clock */
+    .live-clock {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid #eee;
+    }
+
+    .clock-val {
+      font-size: 2rem;
+      font-family: var(--font-heading);
+      color: var(--gold);
+      margin-top: 10px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #4A0E2F;
+      color: #FFF5E6;
+      padding: 70px 20px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* GRID */
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+
+    /* COLUMN */
+    .footer-col {
+      flex: 1;
+      min-width: 220px;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    /* LOGO */
+    .footer-logo {
+      height: 80px;
+      margin-bottom: 10px;
+    }
+
+    /* TEXT */
+    .footer-text {
+      font-size: 14px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    /* HEADINGS */
+    .footer-col h3 {
+      color: #D4AF37;
+      margin-bottom: 15px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* LINKS */
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #FFF5E6;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #D4AF37;
+      padding-left: 6px;
+    }
+
+    /* SOCIAL ICONS */
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icon {
+      width: 38px;
+      height: 38px;
+      background: #4A0E2F;
+      border: 1px solid #D4AF37;
+      color: #D4AF37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .social-icon:hover {
+      background: #D4AF37;
+      color: #4A0E2F;
+      transform: scale(1.1);
+    }
+
+    /* NEWSLETTER */
+    .newsletter-form {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .newsletter-form input {
+      padding: 10px;
+      border: none;
+      outline: none;
+      flex: 1;
+      border-radius: 20px 0 0 20px;
+    }
+
+    .newsletter-form button {
+      background: #D4AF37;
+      color: #4A0E2F;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 0 20px 20px 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .newsletter-form button:hover {
+      background: #c19b2e;
+    }
+
+    /* BUTTON */
+    .btn-gold {
+      display: inline-block;
+      margin-top: 15px;
+      background: #D4AF37;
+      color: #4A0E2F;
+      padding: 10px 18px;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+
+    /* FOOTER BOTTOM */
+    .footer-bottom {
+      text-align: center;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 15px;
+      font-size: 14px;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #D4AF37;
+      color: #4A0E2F;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.4s;
+      z-index: 999;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* WHATSAPP FLOAT */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #25D366;
+      color: #fff;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      background: #1ebe5d;
+    }
+
+    /* ANIMATION */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .footer-grid {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .newsletter-form input,
+      .newsletter-form button {
+        border-radius: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="./image/logo_32-removebg-preview.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <span>Delicious Temptations 4U</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="offers.html">Offers</a></li>
+        <li><a href="tracking.html" class="active">Track Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-icons">
+        <div class="nav-icon" onclick="window.location.href='menu.html'"><span title="Search">🔍</span></div>
+        <!-- ❤️ Wishlist — links to wishlist.html -->
+        <div class="nav-icon" onclick="window.location.href='wishlist.html'" title="My Wishlist">
+          <i class="fas fa-heart"></i>
+          <div class="badge" id="wishlist-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='cart.html'">
+          <span title="Cart">🛒</span>
+          <div class="badge" id="cart-badge" style="display:none;">0</div>
+        </div>
+        <div class="nav-icon" onclick="window.location.href='login.html'"><span title="Login">👤</span></div>
+        <div class="hamburger" id="hamburger-btn">☰</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-close" id="drawer-close">&times;</div>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="offers.html">Offers</a></li>
+      <li><a href="tracking.html">Track Order</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="login.html">Login / Sign Up</a></li>
+    </ul>
+  </div>
+
+  <main style="padding-top: 80px;">
+    <div class="tracking-container">
+      <div class="track-header">
+        <h2>Track Your Happiness</h2>
+        <p>Enter your Order ID below to check the real-time status of your sweet treats.</p>
+      </div>
+
+      <div class="track-input-box">
+        <input type="text" id="track-id" placeholder="Enter Order ID (e.g., DT001)">
+        <button class="btn btn-primary" onclick="trackOrder()">Track</button>
+      </div>
+      <div class="demo-ids">
+        Try demo IDs: <span onclick="fillId('DT001')">DT001</span> | <span onclick="fillId('DT002')">DT002</span> |
+        <span onclick="fillId('DT003')">DT003</span>
+      </div>
+
+      <div class="track-result" id="track-result">
+
+        <div class="order-info-card">
+          <div class="info-chunk">
+            <span class="info-label">Order ID</span>
+            <span class="info-val" id="res-id">DT001</span>
+          </div>
+          <div class="info-chunk">
+            <span class="info-label">Expected Delivery</span>
+            <span class="info-val" id="res-date">Today</span>
+          </div>
+          <div class="info-chunk">
+            <span class="info-label">Address</span>
+            <span class="info-val">Ludhiana, Punjab</span>
+          </div>
+          <div class="info-chunk">
+            <span class="info-label">Total Amount</span>
+            <span class="info-val" id="res-amount">₹450.00</span>
+          </div>
+        </div>
+
+        <div class="stepper" id="stepper">
+          <!-- Steps injected via JS -->
+        </div>
+
+        <div class="live-clock">
+          <p style="color:#888;">Estimated Arrival Time</p>
+          <div class="clock-val" id="live-clock">--:-- --</div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+  <!-- Footer -->
+
+  <footer class="footer">
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <!-- LOGO + ABOUT -->
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="./image/logo_32-removebg-preview.png" alt="Logo" class="footer-logo">
+          </a>
+
+          <p class="footer-text">
+            Handcrafted with love, baked fresh daily in Ludhiana.
+          </p>
+
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Menu</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Track Order</a></li>
+          </ul>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="footer-col">
+          <h3>Categories</h3>
+          <ul class="footer-links">
+            <li><a href="#">Cakes</a></li>
+            <li><a href="#">Cupcakes</a></li>
+            <li><a href="#">Cookies</a></li>
+            <li><a href="#">Gift Hampers</a></li>
+          </ul>
+        </div>
+
+        <!-- NEWSLETTER -->
+        <div class="footer-col">
+          <h3>Stay Updated</h3>
+          <p>Get exclusive offers & sweet updates 💌</p>
+
+          <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="footer-col">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> Ludhiana, Punjab</p>
+          <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+          <p><i class="fas fa-envelope"></i> info@delicioustemptations4u.com</p>
+
+          <a href="https://wa.me/919876543210" class="btn-gold">
+            <i class="fab fa-whatsapp"></i> Order on WhatsApp
+          </a>
+        </div>
+
+      </div>
+
+      <!-- FOOTER BOTTOM -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 Delicious Temptations 4U. All rights reserved.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- POPUP -->
+  <div id="popup" class="popup"></div>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script src="productsData.js"></script>
+  <script src="app.js"></script>
+  <!-- Wishlist engine: must come after app.js -->
+  <script src="wishlist.js"></script>
+  <script>
+    function fillId(id) {
+      document.getElementById('track-id').value = id;
+      trackOrder();
+    }
+
+    function trackOrder() {
+      const input = document.getElementById('track-id').value.trim();
+      if (!input) {
+        showToast("Please enter an Order ID");
+        return;
+      }
+
+      // Mock random progress based on ID hash or just random
+      let progressLevel = 1;
+      if (input === 'DT001') progressLevel = 4; // Out for delivery
+      else if (input === 'DT002') progressLevel = 2; // Baking
+      else if (input === 'DT003') progressLevel = 5; // Delivered
+      else progressLevel = Math.floor(Math.random() * 5) + 1; // Random 1-5
+
+      document.getElementById('res-id').textContent = input;
+      document.getElementById('res-amount').textContent = '₹' + (Math.floor(Math.random() * 2000) + 500) + '.00';
+
+      const stepsData = [
+        { icon: '✅', title: 'Order Placed', desc: 'We have received your order.' },
+        { icon: '🍳', title: 'Preparing', desc: 'Gathering the finest ingredients.' },
+        { icon: '🔥', title: 'Baking', desc: 'Baking your treats to perfection.' },
+        { icon: '📦', title: 'Quality Check & Packing', desc: 'Ensuring it looks as good as it tastes.' },
+        { icon: '🚚', title: 'Out for Delivery', desc: 'Your happiness is on the way!' },
+        { icon: '🎁', title: 'Delivered', desc: 'Enjoy your delicious treats!' }
+      ];
+
+      const stepper = document.getElementById('stepper');
+      stepper.innerHTML = stepsData.map((step, idx) => {
+        let classes = 'step';
+        if (idx < progressLevel) classes += ' completed';
+        if (idx === progressLevel) classes += ' active';
+
+        // Fake time logic
+        const time = new Date();
+        time.setHours(time.getHours() - (progressLevel - idx));
+        const timeStr = idx <= progressLevel ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Pending...';
+
+        return `
+          <div class="${classes}">
+            <div class="step-icon">${step.icon}</div>
+            <div class="step-title">${step.title}</div>
+            <div class="step-time">${timeStr} - ${step.desc}</div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('track-result').style.display = 'block';
+
+      // Start Clock
+      setupClock();
+    }
+
+    let clockInterval;
+    function setupClock() {
+      if (clockInterval) clearInterval(clockInterval);
+
+      // Set target to 45 mins from now
+      const target = new Date();
+      target.setMinutes(target.getMinutes() + 45);
+
+      const updateClock = () => {
+        document.getElementById('live-clock').textContent = target.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      };
+
+      updateClock();
+      clockInterval = setInterval(updateClock, 1000);
+    }
+  </script>
+</body>
+
+</html>
